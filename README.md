@@ -272,7 +272,7 @@ flowchart LR
 
 ```bash
 npm install
-npm test               # compiles, then runs 119 tests
+npm test               # compiles, then runs 120 tests
 npm run typecheck
 npm run package        # builds the .vsix
 npm run preview        # writes docs/preview/sidebar.en.html and sidebar.ko.html

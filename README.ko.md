@@ -13,7 +13,7 @@
 
 ## 무엇을 더해 주나요
 
-- **Rules for this file(이 파일의 규칙)**: 탐색기 뷰. 열린 파일에 에이전트마다 붙는 지침 파일을 문맥 순서대로, 이유(상위 폴더, 일치한 글롭, `alwaysApply`, 에이전트 요청, 필요할 때 로드)와 대략의 토큰 수와 함께 보여 줍니다.
+- **이 파일에 붙는 규칙** (영문 표시: Rules for this file): 탐색기 뷰. 열린 파일에 에이전트마다 붙는 지침 파일을 문맥 순서대로, 이유(상위 폴더, 일치한 글롭, `alwaysApply`, 에이전트 요청, 필요할 때 로드)와 대략의 토큰 수와 함께 보여 줍니다.
 - **문제(Problems) 패널**: 오류 없이 조용히 실패하는 규칙을 찾는 검사 10개(`RP001`-`RP010`). 그중 2개는 빠른 수정을 제공합니다.
 - **실행 폴더 가정**: Claude Code, Codex, Gemini CLI는 어느 폴더에서 띄웠느냐에 따라 읽는 파일이 달라집니다. 폴더를 바꿔 가며 목록이 어떻게 달라지는지 볼 수 있습니다.
 - **CI용 CLI**: `ruleprism check` 가 파일마다 기대한 규칙 파일이 붙는지 단언하고, 어긋나면 종료 코드 1을 냅니다.
@@ -272,7 +272,7 @@ flowchart LR
 
 ```bash
 npm install
-npm test               # 컴파일 후 테스트 119개 실행
+npm test               # 컴파일 후 테스트 120개 실행
 npm run typecheck
 npm run package        # .vsix 생성
 npm run preview        # docs/preview/sidebar.en.html, sidebar.ko.html 생성
