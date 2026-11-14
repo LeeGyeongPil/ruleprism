@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.1.3
+
+### Fixed
+
+- `ruleprism check` now exits 2 (`error:` + `hint:`) when a case's `file` or `launchDir` does not exist in the workspace, listing every problem case. Previously a misspelled path was judged without any check, so an `excludes`-only case passed silently. Expectation files that contained such typos will now fail in CI; fix the paths.
+- `ruleprism which` prints a warning on stderr (stdout and `--json` output unchanged, exit code still 0) when the file or `--launch-dir` does not exist.
+
+### Known issues
+
+- The comment on the internal `pathExists` helper says paths outside the workspace root are not checked, but the helper does not reject them (existing behavior, unchanged). Such a path is reported as missing only if it does not exist on disk.
+
 ## 0.1.2
 
 ### Fixed

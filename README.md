@@ -37,7 +37,7 @@ Ruleprism is not on the VS Code Marketplace or npm yet. Build it from source:
 git clone https://github.com/LeeGyeongPil/ruleprism.git
 cd ruleprism
 npm install
-npm run package          # creates ruleprism-0.1.2.vsix
+npm run package          # creates ruleprism-0.1.3.vsix
 ```
 
 With npm 11 you may see a warning that install scripts of `@vscode/vsce-sign` and `fsevents` were not run. This is expected and harmless: `npm run package` still works.
@@ -45,7 +45,7 @@ With npm 11 you may see a warning that install scripts of `@vscode/vsce-sign` an
 Install the `.vsix` with the VS Code CLI, or in VS Code run **Extensions: Install from VSIX...** from the Command Palette:
 
 ```bash
-code --install-extension ruleprism-0.1.2.vsix
+code --install-extension ruleprism-0.1.3.vsix
 ```
 
 To try the CLI without VS Code:
@@ -70,7 +70,7 @@ node out/cli/main.js demo --write ./ruleprism-demo
 code ./ruleprism-demo
 ```
 
-The command prints a hint that starts with `ruleprism which ...`. In a clone the `ruleprism` command is not on your `PATH` until you run `npm link` once; until then run the same thing as `node out/cli/main.js which ...`.
+The command prints a hint such as `Next: cd ./ruleprism-demo && ruleprism which ...`. In a clone the `ruleprism` command is not on your `PATH` until you run `npm link` once; until then run the same thing as `node out/cli/main.js which ...`.
 
 Open `src/web/components/Button.tsx`. The Explorer shows **Rules for this file**; the status bar shows a summary such as `Rules: C7 Cp9 Cu5 Cx1 G2` (agent letter and file count).
 
@@ -182,7 +182,7 @@ A short summary; the full tables with source URLs are in [docs/sources.md](docs/
 
 ### Use in CI
 
-`ruleprism check` reads an expectation file (see above) and exits 0 when every case passes, 1 when a case fails, 2 on a usage or input error. Ruleprism is not on npm yet, so the job below clones a tagged release (`v0.1.2`), builds it, and runs `check` against your repository. `actions/setup-node` puts Node on the `PATH`; the action versions are the ones this repository's own CI uses.
+`ruleprism check` reads an expectation file (see above) and exits 0 when every case passes, 1 when a case fails, 2 on a usage or input error. Ruleprism is not on npm yet, so the job below clones a tagged release (`v0.1.3`), builds it, and runs `check` against your repository. `actions/setup-node` puts Node on the `PATH`; the action versions are the ones this repository's own CI uses.
 
 ```yaml
 name: rules
@@ -197,7 +197,7 @@ jobs:
           node-version: 22.x
       - name: Build ruleprism
         run: |
-          git clone --depth 1 --branch v0.1.2 https://github.com/LeeGyeongPil/ruleprism.git "$RUNNER_TEMP/ruleprism"
+          git clone --depth 1 --branch v0.1.3 https://github.com/LeeGyeongPil/ruleprism.git "$RUNNER_TEMP/ruleprism"
           cd "$RUNNER_TEMP/ruleprism"
           npm ci
           npm run compile
@@ -266,13 +266,14 @@ flowchart LR
 | A rule you expect is missing for Claude Code | `AGENTS.md` is hidden by `CLAUDE.md` (`RP005`) | Set `ruleprism.claude.instructionFiles` to `claude-md-and-agents-md` if you use that Claude Code setting. |
 | Codex list differs from what you expect | Codex reads only from the project root down to the launch folder | Set `ruleprism.launchFolder` or `--launch-dir`. |
 | `error: ... is outside the workspace root` (exit 2) | The file path is not under `--root` | Pass a path inside the root, or change `--root`. |
+| `error: these paths are not in the workspace ...` (exit 2 for `check`) or `warning: ... does not exist` (`which`, exit 0) | A `file` or `launchDir` in the expectation file, or the `which` argument, is misspelled or missing in the workspace | Fix the path; it is relative to the workspace root. `which` only warns so you can try a file you have not created yet. |
 | `code: command not found` | VS Code shell command is not installed | Use **Extensions: Install from VSIX...** in the Command Palette. |
 
 ## Development
 
 ```bash
 npm install
-npm test               # compiles, then runs 120 tests
+npm test               # compiles, then runs 130 tests
 npm run typecheck
 npm run package        # builds the .vsix
 npm run preview        # writes docs/preview/sidebar.en.html and sidebar.ko.html

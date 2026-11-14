@@ -37,7 +37,7 @@ Ruleprism 은 아직 VS Code 마켓플레이스나 npm 에 없습니다. 소스�
 git clone https://github.com/LeeGyeongPil/ruleprism.git
 cd ruleprism
 npm install
-npm run package          # ruleprism-0.1.2.vsix 생성
+npm run package          # ruleprism-0.1.3.vsix 생성
 ```
 
 npm 11 에서는 `@vscode/vsce-sign` 과 `fsevents` 의 설치 스크립트가 실행되지 않았다는 경고가 보일 수 있습니다. 정상이며 `npm run package` 에는 영향이 없습니다.
@@ -45,7 +45,7 @@ npm 11 에서는 `@vscode/vsce-sign` 과 `fsevents` 의 설치 스크립트가 �
 `.vsix` 는 VS Code CLI 로 설치하거나, VS Code 명령 팔레트에서 **Extensions: Install from VSIX...** 를 실행합니다.
 
 ```bash
-code --install-extension ruleprism-0.1.2.vsix
+code --install-extension ruleprism-0.1.3.vsix
 ```
 
 VS Code 없이 CLI 만 써 보려면:
@@ -70,7 +70,7 @@ node out/cli/main.js demo --write ./ruleprism-demo
 code ./ruleprism-demo
 ```
 
-이 명령은 `ruleprism which ...` 로 시작하는 안내를 출력합니다. clone 한 곳에서는 `npm link` 를 한 번 실행하기 전까지 `ruleprism` 명령이 `PATH` 에 없으므로, 그때까지는 같은 명령을 `node out/cli/main.js which ...` 로 실행하세요.
+이 명령은 `Next: cd ./ruleprism-demo && ruleprism which ...` 같은 안내를 출력합니다. clone 한 곳에서는 `npm link` 를 한 번 실행하기 전까지 `ruleprism` 명령이 `PATH` 에 없으므로, 그때까지는 같은 명령을 `node out/cli/main.js which ...` 로 실행하세요.
 
 `src/web/components/Button.tsx` 를 열면 탐색기에 **이 파일에 붙는 규칙**(영문 표시: Rules for this file)이 보이고, 상태 표시줄에 `Rules: C7 Cp9 Cu5 Cx1 G2` 같은 요약(에이전트 글자와 파일 수)이 나옵니다.
 
@@ -182,7 +182,7 @@ node out/cli/main.js check ruleprism.expect.fail.json --example mixed-monorepo
 
 ### CI 에서 쓰기
 
-`ruleprism check` 는 기대 파일(위 참고)을 읽어 모든 항목이 통과하면 종료 코드 0, 실패하면 1, 사용법·입력 오류면 2 를 냅니다. Ruleprism 은 아직 npm 에 없으므로 아래 작업은 태그가 붙은 릴리스(`v0.1.2`)를 clone 해 빌드한 뒤 내 레포에 `check` 를 실행합니다. `actions/setup-node` 가 Node 를 `PATH` 에 넣어 주며, 액션 버전은 이 레포 자체 CI 가 쓰는 것과 같습니다.
+`ruleprism check` 는 기대 파일(위 참고)을 읽어 모든 항목이 통과하면 종료 코드 0, 실패하면 1, 사용법·입력 오류면 2 를 냅니다. Ruleprism 은 아직 npm 에 없으므로 아래 작업은 태그가 붙은 릴리스(`v0.1.3`)를 clone 해 빌드한 뒤 내 레포에 `check` 를 실행합니다. `actions/setup-node` 가 Node 를 `PATH` 에 넣어 주며, 액션 버전은 이 레포 자체 CI 가 쓰는 것과 같습니다.
 
 ```yaml
 name: rules
@@ -197,7 +197,7 @@ jobs:
           node-version: 22.x
       - name: Build ruleprism
         run: |
-          git clone --depth 1 --branch v0.1.2 https://github.com/LeeGyeongPil/ruleprism.git "$RUNNER_TEMP/ruleprism"
+          git clone --depth 1 --branch v0.1.3 https://github.com/LeeGyeongPil/ruleprism.git "$RUNNER_TEMP/ruleprism"
           cd "$RUNNER_TEMP/ruleprism"
           npm ci
           npm run compile
@@ -266,13 +266,14 @@ flowchart LR
 | Claude Code 에서 기대한 규칙이 안 보임 | `CLAUDE.md` 때문에 `AGENTS.md` 가 가려짐(`RP005`) | 그 Claude Code 설정을 쓴다면 `ruleprism.claude.instructionFiles` 를 `claude-md-and-agents-md` 로 바꾸세요. |
 | Codex 목록이 기대와 다름 | Codex 는 프로젝트 루트부터 실행 폴더까지만 읽음 | `ruleprism.launchFolder` 또는 `--launch-dir` 을 설정하세요. |
 | `error: ... is outside the workspace root`(종료 2) | 파일 경로가 `--root` 안에 없음 | 루트 안의 경로를 주거나 `--root` 를 바꾸세요. |
+| `error: 작업 공간 ... 에 없는 경로가 있습니다`(`check`, 종료 2) 또는 `경고: ... 없습니다`(`which`, 종료 0) | 기대 파일의 `file`·`launchDir` 또는 `which` 인자가 오타이거나 작업 공간에 없음 | 경로를 고치세요. 경로는 작업 공간 루트 기준입니다. `which` 는 아직 만들지 않은 파일을 가정해 볼 수 있도록 경고만 합니다. |
 | `code: command not found` | VS Code 셸 명령이 설치되지 않음 | 명령 팔레트의 **Extensions: Install from VSIX...** 를 쓰세요. |
 
 ## 개발
 
 ```bash
 npm install
-npm test               # 컴파일 후 테스트 120개 실행
+npm test               # 컴파일 후 테스트 130개 실행
 npm run typecheck
 npm run package        # .vsix 생성
 npm run preview        # docs/preview/sidebar.en.html, sidebar.ko.html 생성
