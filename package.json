@@ -1,0 +1,191 @@
+{
+  "name": "ruleprism",
+  "displayName": "Ruleprism",
+  "description": "%ext.description%",
+  "version": "0.1.0",
+  "publisher": "leegyeongpil",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LeeGyeongPil/ruleprism"
+  },
+  "bugs": {
+    "url": "https://github.com/LeeGyeongPil/ruleprism/issues"
+  },
+  "homepage": "https://github.com/LeeGyeongPil/ruleprism#readme",
+  "keywords": [
+    "agents",
+    "AGENTS.md",
+    "CLAUDE.md",
+    "copilot-instructions",
+    "cursor-rules",
+    "GEMINI.md",
+    "instructions",
+    "lint"
+  ],
+  "engines": {
+    "vscode": "^1.103.0",
+    "node": ">=22.12"
+  },
+  "categories": [
+    "Linters",
+    "Other"
+  ],
+  "activationEvents": [
+    "workspaceContains:**/CLAUDE.md",
+    "workspaceContains:**/AGENTS.md",
+    "workspaceContains:**/GEMINI.md",
+    "workspaceContains:.github/copilot-instructions.md",
+    "workspaceContains:.github/instructions/**",
+    "workspaceContains:.cursor/rules/**",
+    "workspaceContains:.claude/rules/**"
+  ],
+  "main": "./out/extension/extension.js",
+  "bin": {
+    "ruleprism": "out/cli/main.js"
+  },
+  "l10n": "./l10n",
+  "contributes": {
+    "views": {
+      "explorer": [
+        {
+          "id": "ruleprism.rules",
+          "name": "%view.rules.name%"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "ruleprism.refresh",
+        "title": "%command.refresh%",
+        "category": "Ruleprism",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "ruleprism.explainPattern",
+        "title": "%command.explainPattern%",
+        "category": "Ruleprism"
+      },
+      {
+        "command": "ruleprism.copyJson",
+        "title": "%command.copyJson%",
+        "category": "Ruleprism"
+      },
+      {
+        "command": "ruleprism.setLaunchFolder",
+        "title": "%command.setLaunchFolder%",
+        "category": "Ruleprism"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "ruleprism.refresh",
+          "when": "view == ruleprism.rules",
+          "group": "navigation"
+        },
+        {
+          "command": "ruleprism.setLaunchFolder",
+          "when": "view == ruleprism.rules"
+        },
+        {
+          "command": "ruleprism.copyJson",
+          "when": "view == ruleprism.rules"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Ruleprism",
+      "properties": {
+        "ruleprism.agents": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "claude",
+              "copilot",
+              "cursor",
+              "codex",
+              "gemini"
+            ]
+          },
+          "default": [
+            "claude",
+            "copilot",
+            "cursor",
+            "codex",
+            "gemini"
+          ],
+          "description": "%config.agents%"
+        },
+        "ruleprism.launchFolder": {
+          "type": "string",
+          "default": "workspaceRoot",
+          "markdownDescription": "%config.launchFolder%"
+        },
+        "ruleprism.includeUserFiles": {
+          "type": "boolean",
+          "default": true,
+          "description": "%config.includeUserFiles%"
+        },
+        "ruleprism.claude.instructionFiles": {
+          "type": "string",
+          "enum": [
+            "claude-md-or-agents-md",
+            "claude-md-and-agents-md"
+          ],
+          "default": "claude-md-or-agents-md",
+          "description": "%config.claudeInstructionFiles%"
+        },
+        "ruleprism.codex.maxBytes": {
+          "type": "number",
+          "default": 32768,
+          "minimum": 1,
+          "description": "%config.codexMaxBytes%"
+        },
+        "ruleprism.gemini.fileNames": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            "GEMINI.md"
+          ],
+          "description": "%config.geminiFileNames%"
+        },
+        "ruleprism.language": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "en",
+            "ko"
+          ],
+          "default": "auto",
+          "description": "%config.language%"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "typecheck": "tsc -p ./ --noEmit",
+    "pretest": "npm run compile",
+    "test": "vitest run",
+    "start": "npm run compile && node out/cli/main.js demo",
+    "preview": "npm run compile && node out/preview/render.js",
+    "package": "vsce package"
+  },
+  "dependencies": {
+    "picomatch": "4.0.7",
+    "yaml": "2.9.1"
+  },
+  "devDependencies": {
+    "@types/node": "22.20.5",
+    "@types/picomatch": "4.0.3",
+    "@types/vscode": "^1.103.0",
+    "@vscode/vsce": "4.1.1",
+    "typescript": "6.0.3",
+    "vitest": "5.1.0"
+  }
+}

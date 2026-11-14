@@ -1,0 +1,12 @@
+# npm 패키지(CLI)에는 컴파일된 out/ 과 문서만 넣는다.
+src/
+test/
+docs/
+.github/
+out/**/*.map
+out/preview/
+*.vsix
+tsconfig.json
+vitest.config.ts
+.vscodeignore
+ruleprism-demo/

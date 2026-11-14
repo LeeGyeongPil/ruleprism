@@ -1,0 +1,15 @@
+{
+  "ext.description": "See which agent instruction files (CLAUDE.md, .claude/rules, AGENTS.md, Copilot, Cursor, GEMINI.md) apply to the open file, in what order and why, and catch rules that silently fail.",
+  "view.rules.name": "Rules for this file",
+  "command.refresh": "Refresh",
+  "command.explainPattern": "Explain pattern…",
+  "command.copyJson": "Copy result as JSON",
+  "command.setLaunchFolder": "Set launch folder…",
+  "config.agents": "Agents to show.",
+  "config.launchFolder": "Folder the agent is assumed to be started in: `workspaceRoot`, `fileFolder` (the open file's folder), or a path relative to the workspace root. Codex, Claude Code and Gemini CLI read different files depending on it.",
+  "config.includeUserFiles": "Include user-level files (~/.claude/CLAUDE.md, ~/.claude/rules, ~/.codex/AGENTS.md, ~/.gemini/GEMINI.md).",
+  "config.claudeInstructionFiles": "Claude Code 'Project instructions' setting: read AGENTS.md only when there is no CLAUDE.md (default), or read both.",
+  "config.codexMaxBytes": "Codex total byte limit for project instructions (project_doc_max_bytes).",
+  "config.geminiFileNames": "Gemini CLI context file names (context.fileName).",
+  "config.language": "Language for reasons and diagnostics: auto (follow VS Code), en or ko."
+}

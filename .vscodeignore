@@ -1,0 +1,19 @@
+# VSIX 에는 컴파일된 확장·코어·화면 모델·번역과 런타임 의존성(picomatch·yaml)만 넣는다.
+src/**
+test/**
+docs/**
+.github/**
+out/**/*.map
+out/preview/**
+out/cli/**
+tsconfig.json
+vitest.config.ts
+.gitignore
+.npmignore
+*.vsix
+ruleprism-demo/**
+node_modules/yaml/browser/**
+node_modules/**/*.d.ts
+node_modules/**/*.map
+node_modules/**/README.md
+node_modules/**/CHANGELOG.md

@@ -1,0 +1,11 @@
+{
+  "Glob pattern to explain": "설명할 글롭 패턴",
+  "File path relative to the workspace root": "워크스페이스 루트 기준 파일 경로",
+  "Open a file in a workspace folder first.": "먼저 작업 공간 폴더 안의 파일을 여세요.",
+  "Copied the result as JSON.": "결과를 JSON 으로 복사했습니다.",
+  "Workspace root": "워크스페이스 루트",
+  "Folder of the current file": "현재 파일의 폴더",
+  "Another folder…": "다른 폴더…",
+  "Where was the agent started?": "에이전트를 어디서 띄웠나요?",
+  "Folder relative to the workspace root": "워크스페이스 루트 기준 폴더"
+}
