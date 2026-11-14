@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>Ruleprism 미리보기</title>
+<style>
+  body { margin: 0; font: 13px/1.5 -apple-system, "Segoe UI", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif; background: #1e1e1e; color: #ccc; }
+  .caption { padding: 8px 14px; background: #2d2d30; color: #9cdcfe; font-size: 12px; }
+  .layout { display: grid; grid-template-columns: 560px 1fr; min-height: 560px; }
+  .sidebar { background: #252526; border-right: 1px solid #333; padding: 6px 0; }
+  .editor { padding: 14px; color: #d4d4d4; font-family: Menlo, Consolas, monospace; }
+  h2 { font-size: 11px; letter-spacing: .06em; text-transform: uppercase; margin: 4px 14px 8px; color: #bbb; }
+  details.agent { margin: 0 6px 4px; }
+  summary { cursor: default; padding: 2px 4px; }
+  summary .label { color: #fff; font-weight: 600; }
+  .desc { color: #8c8c8c; margin-left: 6px; }
+  ul { list-style: none; margin: 0; padding-left: 18px; }
+  li { padding: 1px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  li.entry .label { color: #e0e0e0; }
+  li.skipped { color: #7a7a7a; }
+  .icon { display: inline-block; width: 14px; text-align: center; }
+  li.certain .icon { color: #89d185; } li.conditional .icon { color: #d7ba7d; } li.uncertain .icon { color: #c586c0; }
+  .problems { border-top: 1px solid #333; background: #1e1e1e; padding: 6px 0 10px; }
+  .problems li { padding: 2px 14px; white-space: normal; }
+  .sev { display: inline-block; min-width: 54px; font-weight: 600; }
+  li.warning .sev { color: #cca700; } li.info .sev { color: #3794ff; } li.error .sev { color: #f14c4c; }
+  .where { color: #8c8c8c; margin-left: 6px; }
+  .status { background: #007acc; color: #fff; padding: 3px 14px; font-size: 12px; }
+</style>
+</head>
+<body>
+<div class="caption">VS Code 확장과 같은 코어로 만든 HTML 미리보기이며 VS Code 화면이 아닙니다. 연습용 작업 공간: mixed-monorepo.</div>
+<div class="layout">
+  <section class="sidebar">
+    <h2>이 파일에 붙는 규칙</h2>
+    <details open class="agent" data-agent="claude"><summary><span class="label">Claude Code</span> <span class="desc">7개 · ~104토큰 · 문맥 순서</span></summary>
+<ul>
+<li class="entry certain"><span class="icon">✔</span> <span class="label">1. CLAUDE.md</span> <span class="desc">시작 시: 작업 폴더 또는 그 위 폴더(.) · ~21토큰</span></li>
+<li class="entry certain"><span class="icon">✔</span> <span class="label">2. .claude/rules/broken.md</span> <span class="desc">앞머리를 해석하지 못함: paths 가 없는 것처럼 시작 시 로드 · ~9토큰</span></li>
+<li class="entry certain"><span class="icon">✔</span> <span class="label">3. .claude/rules/general.md</span> <span class="desc">paths 없는 규칙: 시작 시 로드 · ~11토큰</span></li>
+<li class="entry certain"><span class="icon">✔</span> <span class="label">4. .claude/rules/globs-only.md</span> <span class="desc">globs/applyTo 만 있고 paths 가 없음: Claude 는 무시하고 시작 시 로드 · ~18토큰</span></li>
+<li class="entry conditional"><span class="icon">◷</span> <span class="label">5. src/web/CLAUDE.md</span> <span class="desc">필요 시: 작업 폴더 아래 하위 폴더 src/web · ~18토큰</span></li>
+<li class="entry conditional"><span class="icon">◷</span> <span class="label">6. .claude/rules/frontend/tsx.md</span> <span class="desc">paths 일치 &quot;src/**/*.tsx&quot; · ~14토큰</span></li>
+<li class="entry conditional"><span class="icon">◷</span> <span class="label">7. .claude/rules/ts.md</span> <span class="desc">paths 일치 &quot;src/**/*.{ts,tsx}&quot; · ~13토큰</span></li>
+<li class="skipped "><span class="icon">⊘</span> <span class="label">제외: AGENTS.md</span> <span class="desc">읽지 않음: CLAUDE.md 이(가) 있어 Claude 는 CLAUDE.md 파일을 읽음</span></li>
+<li class="skipped "><span class="icon">⊘</span> <span class="label">제외: src/web/AGENTS.md</span> <span class="desc">읽지 않음: src/web/CLAUDE.md 이(가) 있어 Claude 는 CLAUDE.md 파일을 읽음</span></li>
+</ul></details>
+<details open class="agent" data-agent="copilot"><summary><span class="label">GitHub Copilot</span> <span class="desc">9개 · ~135토큰 · 병합, 우선순위 없음</span></summary>
+<ul>
+<li class="entry certain"><span class="icon">✔</span> <span class="label">1. .github/copilot-instructions.md</span> <span class="desc">저장소 전체 지침 · ~19토큰</span></li>
+<li class="entry certain"><span class="icon">✔</span> <span class="label">2. .github/instructions/ts.instructions.md</span> <span class="desc">applyTo 일치 &quot;**/*.tsx&quot; · ~12토큰</span></li>
+<li class="entry certain"><span class="icon">✔</span> <span class="label">3. AGENTS.md</span> <span class="desc">워크스페이스 루트 AGENTS.md(chat.useAgentsMdFile) · ~18토큰</span></li>
+<li class="entry certain"><span class="icon">✔</span> <span class="label">4. CLAUDE.md</span> <span class="desc">Claude 지침 파일(chat.useClaudeMdFile) · ~21토큰</span></li>
+<li class="entry uncertain"><span class="icon">?</span> <span class="label">5. .claude/rules/broken.md</span> <span class="desc">chat.useClaudeMdFile 로 읽는 paths 없는 .claude/rules 규칙(문서에 자세한 동작 없음) · ~9토큰</span></li>
+<li class="entry uncertain"><span class="icon">?</span> <span class="label">6. .claude/rules/frontend/tsx.md</span> <span class="desc">chat.useClaudeMdFile 로 읽는 .claude/rules, paths 일치 &quot;src/**/*.tsx&quot;(문서에 자세한 동작 없음) · ~14토큰</span></li>
+<li class="entry uncertain"><span class="icon">?</span> <span class="label">7. .claude/rules/general.md</span> <span class="desc">chat.useClaudeMdFile 로 읽는 paths 없는 .claude/rules 규칙(문서에 자세한 동작 없음) · ~11토큰</span></li>
+<li class="entry uncertain"><span class="icon">?</span> <span class="label">8. .claude/rules/globs-only.md</span> <span class="desc">chat.useClaudeMdFile 로 읽는 paths 없는 .claude/rules 규칙(문서에 자세한 동작 없음) · ~18토큰</span></li>
+<li class="entry uncertain"><span class="icon">?</span> <span class="label">9. .claude/rules/ts.md</span> <span class="desc">chat.useClaudeMdFile 로 읽는 .claude/rules, paths 일치 &quot;src/**/*.{ts,tsx}&quot;(문서에 자세한 동작 없음) · ~13토큰</span></li>
+</ul></details>
+<details open class="agent" data-agent="cursor"><summary><span class="label">Cursor</span> <span class="desc">5개 · ~57토큰 · 병합, 우선순위 없음</span></summary>
+<ul>
+<li class="entry certain"><span class="icon">✔</span> <span class="label">1. .cursor/rules/always.mdc</span> <span class="desc">alwaysApply: true · ~8토큰</span></li>
+<li class="entry certain"><span class="icon">✔</span> <span class="label">2. .cursor/rules/react.mdc</span> <span class="desc">globs 일치 &quot;src/web/**/*.tsx&quot; · ~7토큰</span></li>
+<li class="entry uncertain"><span class="icon">?</span> <span class="label">3. .cursor/rules/req.mdc</span> <span class="desc">요청형: description 만 있어 에이전트가 판단 · ~8토큰</span></li>
+<li class="entry certain"><span class="icon">✔</span> <span class="label">4. AGENTS.md</span> <span class="desc">. 의 AGENTS.md(가까운 파일이 우선) · ~18토큰</span></li>
+<li class="entry certain"><span class="icon">✔</span> <span class="label">5. src/web/AGENTS.md</span> <span class="desc">src/web 의 AGENTS.md(가까운 파일이 우선) · ~16토큰</span></li>
+<li class="skipped "><span class="icon">⊘</span> <span class="label">제외: .cursor/rules/manual.mdc</span> <span class="desc">자동으로 붙지 않음: 수동 규칙(@로 언급해야 함)</span></li>
+</ul></details>
+<details open class="agent" data-agent="codex"><summary><span class="label">Codex</span> <span class="desc">1개 · ~18토큰 · 문맥 순서</span></summary>
+<ul>
+<li class="entry certain"><span class="icon">✔</span> <span class="label">1. AGENTS.md</span> <span class="desc">프로젝트 루트에서 작업 폴더까지, 폴더당 한 파일 · ~18토큰</span></li>
+<li class="skipped "><span class="icon">⊘</span> <span class="label">제외: src/web/AGENTS.md</span> <span class="desc">읽지 않음: Codex 는 프로젝트 루트에서 작업 폴더(.)까지만 AGENTS.md 를 읽음</span></li>
+</ul></details>
+<details open class="agent" data-agent="gemini"><summary><span class="label">Gemini CLI</span> <span class="desc">2개 · ~27토큰 · 문맥 순서</span></summary>
+<ul>
+<li class="entry certain"><span class="icon">✔</span> <span class="label">1. GEMINI.md</span> <span class="desc">시작 시: 작업 폴더 또는 그 위 폴더(.) · ~15토큰</span></li>
+<li class="entry conditional"><span class="icon">◷</span> <span class="label">2. src/web/GEMINI.md</span> <span class="desc">JIT: 작업 중인 파일의 폴더 src/web · ~12토큰</span></li>
+</ul></details>
+  </section>
+  <section class="editor">src/web/components/Button.tsx<pre>export function Button() {
+  return &lt;button&gt;OK&lt;/button&gt;;
+}
+</pre></section>
+</div>
+<section class="problems">
+  <h2>문제 (16)</h2>
+  <ul>
+<li class="warning"><span class="sev">경고</span> <span class="msg">앞머리가 올바른 YAML 이 아닙니다(Flow sequence in block collection must be sufficiently indented and end with a ]). Claude 는 앞머리를 무시하고 이 규칙을 모든 파일에 로드합니다</span> <span class="where">RP004 · .claude/rules/broken.md:2</span></li>
+<li class="warning"><span class="sev">경고</span> <span class="msg">paths 이(가) 이 작업 공간의 어떤 파일에도 일치하지 않습니다(죽은 규칙)</span> <span class="where">RP007 · .claude/rules/dead.md:2</span></li>
+<li class="warning"><span class="sev">경고</span> <span class="msg">Claude 는 paths 만 읽습니다. globs 은(는) 무시되어 이 규칙이 모든 파일에 로드됩니다</span> <span class="where">RP009 · .claude/rules/globs-only.md:2</span></li>
+<li class="warning"><span class="sev">경고</span> <span class="msg">alwaysApply: true 이면 Cursor 는 globs 를 무시합니다</span> <span class="where">RP003 · .cursor/rules/always.mdc:4</span></li>
+<li class="warning"><span class="sev">경고</span> <span class="msg">이 규칙 파일을 읽을 수 없습니다(EACCES)</span> <span class="where">RP008 · .cursor/rules/locked.mdc:1</span></li>
+<li class="info"><span class="sev">정보</span> <span class="msg">앞머리가 엄격한 YAML 이 아닙니다(Unresolved alias (the anchor must be set before the alias): */*.test.ts). Cursor 는 관대하게 읽습니다</span> <span class="where">RP004 · .cursor/rules/star.mdc:2</span></li>
+<li class="warning"><span class="sev">경고</span> <span class="msg">applyTo 가 YAML 목록입니다. Copilot 은 쉼표로 구분한 문자열 하나를 읽습니다</span> <span class="where">RP001 · .github/instructions/arr.instructions.md:2</span></li>
+<li class="warning"><span class="sev">경고</span> <span class="msg">&quot;*.ts&quot; 은(는) 워크스페이스 루트의 파일만 일치합니다. 모든 폴더에 적용하려면 &quot;**/*.ts&quot; 을 쓰세요</span> <span class="where">RP002 · .github/instructions/arr.instructions.md:2</span></li>
+<li class="warning"><span class="sev">경고</span> <span class="msg">&quot;*.tsx&quot; 은(는) 워크스페이스 루트의 파일만 일치합니다. 모든 폴더에 적용하려면 &quot;**/*.tsx&quot; 을 쓰세요</span> <span class="where">RP002 · .github/instructions/arr.instructions.md:2</span></li>
+<li class="warning"><span class="sev">경고</span> <span class="msg">applyTo 이(가) 이 작업 공간의 어떤 파일에도 일치하지 않습니다(죽은 규칙)</span> <span class="where">RP007 · .github/instructions/arr.instructions.md:2</span></li>
+<li class="warning"><span class="sev">경고</span> <span class="msg">&quot;*.tsx&quot; 은(는) 워크스페이스 루트의 파일만 일치합니다. 모든 폴더에 적용하려면 &quot;**/*.tsx&quot; 을 쓰세요</span> <span class="where">RP002 · .github/instructions/shallow.instructions.md:2</span></li>
+<li class="warning"><span class="sev">경고</span> <span class="msg">applyTo 이(가) 이 작업 공간의 어떤 파일에도 일치하지 않습니다(죽은 규칙)</span> <span class="where">RP007 · .github/instructions/shallow.instructions.md:2</span></li>
+<li class="info"><span class="sev">정보</span> <span class="msg">CLAUDE.md 이(가) 있어 Claude Code 는 이 AGENTS.md 를 읽지 않습니다(기본값 claude-md-or-agents-md)</span> <span class="where">RP005 · AGENTS.md:1</span></li>
+<li class="info"><span class="sev">정보</span> <span class="msg">CLAUDE.md 이(가) 있어 Claude Code 는 이 AGENTS.md 를 읽지 않습니다(기본값 claude-md-or-agents-md)</span> <span class="where">RP005 · src/legacy/AGENTS.md:1</span></li>
+<li class="warning"><span class="sev">경고</span> <span class="msg">src/legacy 에서 시작하면 Codex 는 지침의 처음 32768바이트만 씁니다(합계 35042바이트). 이 파일이 잘립니다</span> <span class="where">RP006 · src/legacy/AGENTS.md:1</span></li>
+<li class="info"><span class="sev">정보</span> <span class="msg">src/web/CLAUDE.md 이(가) 있어 Claude Code 는 이 AGENTS.md 를 읽지 않습니다(기본값 claude-md-or-agents-md)</span> <span class="where">RP005 · src/web/AGENTS.md:1</span></li>
+  </ul>
+</section>
+<div class="status" title="상태 표시줄">규칙: C7 Cp9 Cu5 Cx1 G2</div>
+</body>
+</html>

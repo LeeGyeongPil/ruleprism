@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Ruleprism preview</title>
+<style>
+  body { margin: 0; font: 13px/1.5 -apple-system, "Segoe UI", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif; background: #1e1e1e; color: #ccc; }
+  .caption { padding: 8px 14px; background: #2d2d30; color: #9cdcfe; font-size: 12px; }
+  .layout { display: grid; grid-template-columns: 560px 1fr; min-height: 560px; }
+  .sidebar { background: #252526; border-right: 1px solid #333; padding: 6px 0; }
+  .editor { padding: 14px; color: #d4d4d4; font-family: Menlo, Consolas, monospace; }
+  h2 { font-size: 11px; letter-spacing: .06em; text-transform: uppercase; margin: 4px 14px 8px; color: #bbb; }
+  details.agent { margin: 0 6px 4px; }
+  summary { cursor: default; padding: 2px 4px; }
+  summary .label { color: #fff; font-weight: 600; }
+  .desc { color: #8c8c8c; margin-left: 6px; }
+  ul { list-style: none; margin: 0; padding-left: 18px; }
+  li { padding: 1px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  li.entry .label { color: #e0e0e0; }
+  li.skipped { color: #7a7a7a; }
+  .icon { display: inline-block; width: 14px; text-align: center; }
+  li.certain .icon { color: #89d185; } li.conditional .icon { color: #d7ba7d; } li.uncertain .icon { color: #c586c0; }
+  .problems { border-top: 1px solid #333; background: #1e1e1e; padding: 6px 0 10px; }
+  .problems li { padding: 2px 14px; white-space: normal; }
+  .sev { display: inline-block; min-width: 54px; font-weight: 600; }
+  li.warning .sev { color: #cca700; } li.info .sev { color: #3794ff; } li.error .sev { color: #f14c4c; }
+  .where { color: #8c8c8c; margin-left: 6px; }
+  .status { background: #007acc; color: #fff; padding: 3px 14px; font-size: 12px; }
+</style>
+</head>
+<body>
+<div class="caption">HTML preview generated from the same core as the VS Code extension, not a VS Code screenshot. Practice workspace: mixed-monorepo.</div>
+<div class="layout">
+  <section class="sidebar">
+    <h2>Rules for this file</h2>
+    <details open class="agent" data-agent="claude"><summary><span class="label">Claude Code</span> <span class="desc">7 files · ~104 tok · in context order</span></summary>
+<ul>
+<li class="entry certain"><span class="icon">✔</span> <span class="label">1. CLAUDE.md</span> <span class="desc">launch: in or above the launch folder (.) · ~21 tok</span></li>
+<li class="entry certain"><span class="icon">✔</span> <span class="label">2. .claude/rules/broken.md</span> <span class="desc">front matter does not parse: loaded at launch as if it had no paths · ~9 tok</span></li>
+<li class="entry certain"><span class="icon">✔</span> <span class="label">3. .claude/rules/general.md</span> <span class="desc">rule without paths: loaded at launch · ~11 tok</span></li>
+<li class="entry certain"><span class="icon">✔</span> <span class="label">4. .claude/rules/globs-only.md</span> <span class="desc">has globs/applyTo but no paths: Claude ignores them and loads it at launch · ~18 tok</span></li>
+<li class="entry conditional"><span class="icon">◷</span> <span class="label">5. src/web/CLAUDE.md</span> <span class="desc">on demand: subfolder src/web below the launch folder · ~18 tok</span></li>
+<li class="entry conditional"><span class="icon">◷</span> <span class="label">6. .claude/rules/frontend/tsx.md</span> <span class="desc">paths matched &quot;src/**/*.tsx&quot; · ~14 tok</span></li>
+<li class="entry conditional"><span class="icon">◷</span> <span class="label">7. .claude/rules/ts.md</span> <span class="desc">paths matched &quot;src/**/*.{ts,tsx}&quot; · ~13 tok</span></li>
+<li class="skipped "><span class="icon">⊘</span> <span class="label">skipped: AGENTS.md</span> <span class="desc">not read: CLAUDE.md exists, so Claude reads CLAUDE.md files instead</span></li>
+<li class="skipped "><span class="icon">⊘</span> <span class="label">skipped: src/web/AGENTS.md</span> <span class="desc">not read: src/web/CLAUDE.md exists, so Claude reads CLAUDE.md files instead</span></li>
+</ul></details>
+<details open class="agent" data-agent="copilot"><summary><span class="label">GitHub Copilot</span> <span class="desc">9 files · ~135 tok · merged, no precedence</span></summary>
+<ul>
+<li class="entry certain"><span class="icon">✔</span> <span class="label">1. .github/copilot-instructions.md</span> <span class="desc">repository-wide instructions · ~19 tok</span></li>
+<li class="entry certain"><span class="icon">✔</span> <span class="label">2. .github/instructions/ts.instructions.md</span> <span class="desc">applyTo matched &quot;**/*.tsx&quot; · ~12 tok</span></li>
+<li class="entry certain"><span class="icon">✔</span> <span class="label">3. AGENTS.md</span> <span class="desc">workspace-root AGENTS.md (chat.useAgentsMdFile) · ~18 tok</span></li>
+<li class="entry certain"><span class="icon">✔</span> <span class="label">4. CLAUDE.md</span> <span class="desc">Claude instruction file (chat.useClaudeMdFile) · ~21 tok</span></li>
+<li class="entry uncertain"><span class="icon">?</span> <span class="label">5. .claude/rules/broken.md</span> <span class="desc">.claude/rules file without paths, read through chat.useClaudeMdFile (details undocumented) · ~9 tok</span></li>
+<li class="entry uncertain"><span class="icon">?</span> <span class="label">6. .claude/rules/frontend/tsx.md</span> <span class="desc">.claude/rules file read through chat.useClaudeMdFile, paths matched &quot;src/**/*.tsx&quot; (details undocumented) · ~14 tok</span></li>
+<li class="entry uncertain"><span class="icon">?</span> <span class="label">7. .claude/rules/general.md</span> <span class="desc">.claude/rules file without paths, read through chat.useClaudeMdFile (details undocumented) · ~11 tok</span></li>
+<li class="entry uncertain"><span class="icon">?</span> <span class="label">8. .claude/rules/globs-only.md</span> <span class="desc">.claude/rules file without paths, read through chat.useClaudeMdFile (details undocumented) · ~18 tok</span></li>
+<li class="entry uncertain"><span class="icon">?</span> <span class="label">9. .claude/rules/ts.md</span> <span class="desc">.claude/rules file read through chat.useClaudeMdFile, paths matched &quot;src/**/*.{ts,tsx}&quot; (details undocumented) · ~13 tok</span></li>
+</ul></details>
+<details open class="agent" data-agent="cursor"><summary><span class="label">Cursor</span> <span class="desc">5 files · ~57 tok · merged, no precedence</span></summary>
+<ul>
+<li class="entry certain"><span class="icon">✔</span> <span class="label">1. .cursor/rules/always.mdc</span> <span class="desc">alwaysApply: true · ~8 tok</span></li>
+<li class="entry certain"><span class="icon">✔</span> <span class="label">2. .cursor/rules/react.mdc</span> <span class="desc">globs matched &quot;src/web/**/*.tsx&quot; · ~7 tok</span></li>
+<li class="entry uncertain"><span class="icon">?</span> <span class="label">3. .cursor/rules/req.mdc</span> <span class="desc">agent-requested: description only, the agent decides · ~8 tok</span></li>
+<li class="entry certain"><span class="icon">✔</span> <span class="label">4. AGENTS.md</span> <span class="desc">AGENTS.md in . (the closest one wins) · ~18 tok</span></li>
+<li class="entry certain"><span class="icon">✔</span> <span class="label">5. src/web/AGENTS.md</span> <span class="desc">AGENTS.md in src/web (the closest one wins) · ~16 tok</span></li>
+<li class="skipped "><span class="icon">⊘</span> <span class="label">skipped: .cursor/rules/manual.mdc</span> <span class="desc">not attached automatically: manual rule (mention it with @)</span></li>
+</ul></details>
+<details open class="agent" data-agent="codex"><summary><span class="label">Codex</span> <span class="desc">1 file · ~18 tok · in context order</span></summary>
+<ul>
+<li class="entry certain"><span class="icon">✔</span> <span class="label">1. AGENTS.md</span> <span class="desc">project root to launch folder, one file per folder · ~18 tok</span></li>
+<li class="skipped "><span class="icon">⊘</span> <span class="label">skipped: src/web/AGENTS.md</span> <span class="desc">not read: Codex reads AGENTS.md only from the project root down to the launch folder (.)</span></li>
+</ul></details>
+<details open class="agent" data-agent="gemini"><summary><span class="label">Gemini CLI</span> <span class="desc">2 files · ~27 tok · in context order</span></summary>
+<ul>
+<li class="entry certain"><span class="icon">✔</span> <span class="label">1. GEMINI.md</span> <span class="desc">launch: in or above the launch folder (.) · ~15 tok</span></li>
+<li class="entry conditional"><span class="icon">◷</span> <span class="label">2. src/web/GEMINI.md</span> <span class="desc">just in time: folder src/web of the file being worked on · ~12 tok</span></li>
+</ul></details>
+  </section>
+  <section class="editor">src/web/components/Button.tsx<pre>export function Button() {
+  return &lt;button&gt;OK&lt;/button&gt;;
+}
+</pre></section>
+</div>
+<section class="problems">
+  <h2>Problems (16)</h2>
+  <ul>
+<li class="warning"><span class="sev">warning</span> <span class="msg">front matter is not valid YAML (Flow sequence in block collection must be sufficiently indented and end with a ]); Claude ignores it and loads this rule for every file</span> <span class="where">RP004 · .claude/rules/broken.md:2</span></li>
+<li class="warning"><span class="sev">warning</span> <span class="msg">paths matches no file in this workspace (dead rule)</span> <span class="where">RP007 · .claude/rules/dead.md:2</span></li>
+<li class="warning"><span class="sev">warning</span> <span class="msg">Claude reads only paths; globs is ignored, so this rule loads for every file</span> <span class="where">RP009 · .claude/rules/globs-only.md:2</span></li>
+<li class="warning"><span class="sev">warning</span> <span class="msg">alwaysApply: true makes Cursor ignore globs</span> <span class="where">RP003 · .cursor/rules/always.mdc:4</span></li>
+<li class="warning"><span class="sev">warning</span> <span class="msg">cannot read this rule file (EACCES)</span> <span class="where">RP008 · .cursor/rules/locked.mdc:1</span></li>
+<li class="info"><span class="sev">info</span> <span class="msg">front matter is not strict YAML (Unresolved alias (the anchor must be set before the alias): */*.test.ts); Cursor reads it leniently</span> <span class="where">RP004 · .cursor/rules/star.mdc:2</span></li>
+<li class="warning"><span class="sev">warning</span> <span class="msg">applyTo is a YAML list; Copilot reads one comma-separated string</span> <span class="where">RP001 · .github/instructions/arr.instructions.md:2</span></li>
+<li class="warning"><span class="sev">warning</span> <span class="msg">&quot;*.ts&quot; only matches files at the workspace root; use &quot;**/*.ts&quot; for every folder</span> <span class="where">RP002 · .github/instructions/arr.instructions.md:2</span></li>
+<li class="warning"><span class="sev">warning</span> <span class="msg">&quot;*.tsx&quot; only matches files at the workspace root; use &quot;**/*.tsx&quot; for every folder</span> <span class="where">RP002 · .github/instructions/arr.instructions.md:2</span></li>
+<li class="warning"><span class="sev">warning</span> <span class="msg">applyTo matches no file in this workspace (dead rule)</span> <span class="where">RP007 · .github/instructions/arr.instructions.md:2</span></li>
+<li class="warning"><span class="sev">warning</span> <span class="msg">&quot;*.tsx&quot; only matches files at the workspace root; use &quot;**/*.tsx&quot; for every folder</span> <span class="where">RP002 · .github/instructions/shallow.instructions.md:2</span></li>
+<li class="warning"><span class="sev">warning</span> <span class="msg">applyTo matches no file in this workspace (dead rule)</span> <span class="where">RP007 · .github/instructions/shallow.instructions.md:2</span></li>
+<li class="info"><span class="sev">info</span> <span class="msg">Claude Code does not read this AGENTS.md because CLAUDE.md exists (default claude-md-or-agents-md)</span> <span class="where">RP005 · AGENTS.md:1</span></li>
+<li class="info"><span class="sev">info</span> <span class="msg">Claude Code does not read this AGENTS.md because CLAUDE.md exists (default claude-md-or-agents-md)</span> <span class="where">RP005 · src/legacy/AGENTS.md:1</span></li>
+<li class="warning"><span class="sev">warning</span> <span class="msg">Codex keeps only the first 32768 bytes of instructions when launched in src/legacy (total 35042 bytes); this file is cut</span> <span class="where">RP006 · src/legacy/AGENTS.md:1</span></li>
+<li class="info"><span class="sev">info</span> <span class="msg">Claude Code does not read this AGENTS.md because src/web/CLAUDE.md exists (default claude-md-or-agents-md)</span> <span class="where">RP005 · src/web/AGENTS.md:1</span></li>
+  </ul>
+</section>
+<div class="status" title="Status bar">Rules: C7 Cp9 Cu5 Cx1 G2</div>
+</body>
+</html>
