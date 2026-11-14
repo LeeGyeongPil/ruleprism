@@ -1,5 +1,5 @@
 # 키·네트워크 없이 코어·CLI 테스트, 타입 검사, VSIX 패키징을 확인한다.
-# (확장 호스트 테스트는 다음 버전 계획: xvfb + @vscode/test-electron)
+# 실제 VS Code(확장 호스트) 테스트는 없다 — 가짜 vscode 모듈로 연기 시험을 하므로 xvfb·디스플레이가 필요 없다.
 name: ci
 on:
   push:
@@ -12,22 +12,57 @@ permissions:
   contents: read
 jobs:
   test:
-    runs-on: ubuntu-latest
+    name: test (node ${{ matrix.node-version }})
+    # ubuntu-latest 는 새 이미지로 옮겨 가는 동안 OS 가 바뀔 수 있어 버전을 고정한다.
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
+    env:
+      # 테스트 기대값은 영어 출력 기준 — 러너 기본값과 같지만 명시해 둔다.
+      LANG: C.UTF-8
     strategy:
       # 한 Node 버전이 실패해도 다른 버전 결과를 끝까지 본다.
       fail-fast: false
       matrix:
-        node-version: [22.x, lts/*]
+        # 22.x = package.json engines 최소 줄(>=22.12), 26.x = 현재 LTS. 움직이는 별칭(lts/*) 대신 줄을 고정한다.
+        node-version: [22.x, 26.x]
     steps:
       - uses: actions/checkout@v7.0.1
       - uses: actions/setup-node@v7.1.0
         with:
           node-version: ${{ matrix.node-version }}
           cache: npm
-      - run: node --version && npm --version
-      - run: npm ci
-      - run: npm test
-      - run: npm run typecheck
-      - run: npm run package
-      - run: npm run preview
+      - name: Show versions
+        run: node --version && npm --version && git --version
+      - name: Install (npm ci)
+        run: npm ci --no-audit --no-fund
+      - name: Test (compile + vitest)
+        # 실패한 테스트 이름이 로그에 한 줄씩 남도록 verbose 로 출력하고,
+        # 로그를 못 받아도 실행 요약(annotations)에서 실패 위치가 보이게 github-actions 리포터를 같이 쓴다.
+        run: npm test -- --reporter=verbose --reporter=github-actions
+      - name: Typecheck
+        run: npm run typecheck
+      - name: Package VSIX
+        run: npm run package
+      - name: Render preview
+        run: npm run preview
+      # 어느 단계든 실패하면 원인 추적에 필요한 상태를 남긴다(이 단계 자체는 실패하지 않는다).
+      - name: Diagnostics on failure
+        if: failure()
+        run: |
+          echo "::group::runtime"
+          node -p "JSON.stringify({node: process.versions.node, icu: process.versions.icu, locale: Intl.DateTimeFormat().resolvedOptions().locale, platform: process.platform, arch: process.arch}, null, 1)" || true
+          npm --version || true
+          locale || true
+          echo "::endgroup::"
+          echo "::group::git status (tracked files changed by the build?)"
+          git status --porcelain || true
+          echo "::endgroup::"
+          echo "::group::installed top-level packages"
+          npm ls --depth=0 || true
+          echo "::endgroup::"
+          echo "::group::out/ (compiled files)"
+          ls -R out 2>/dev/null | head -80 || true
+          echo "::endgroup::"
+          echo "::group::npm debug logs"
+          tail -n 80 "$HOME"/.npm/_logs/*-debug-0.log 2>/dev/null || true
+          echo "::endgroup::"
