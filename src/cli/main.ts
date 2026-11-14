@@ -163,6 +163,13 @@ function runCommand(argv: string[], io: Io, t: Translate): number {
 
   if (command === 'which' || command === 'demo') {
     const file = command === 'demo' ? example!.focusFile : toRootRelative(rest[0], rootAbs, rootLabel, 'file');
+    // which 는 아직 없는 파일을 가정해 보는 용도라 막지 않고, 오타를 알아챌 수 있게 stderr 에만 경고한다.
+    if (command === 'which') {
+      if (!pathExists(file, 'file', rootAbs, example)) io.stderr(`${t('cli.warn.fileMissing', { file: rest[0], root: rootLabel })}\n`);
+      if (opts.launchDir !== undefined && !pathExists(opts.launchDir, 'dir', rootAbs, example)) {
+        io.stderr(`${t('cli.warn.launchDirMissing', { dir: values['launch-dir'] as string, root: rootLabel })}\n`);
+      }
+    }
     const res = resolveFile(index, file, opts, userRules);
     const diags = computeDiagnostics(index, opts);
     if (values.json) {
@@ -191,6 +198,13 @@ function runCommand(argv: string[], io: Io, t: Translate): number {
 
   // check
   const cases = readExpectations(rest[0], io.cwd, example);
+  // 오타 난 경로가 검사 없이 통과하지 않도록, 없는 file·launchDir 은 모두 모아 종료 2 로 알린다.
+  const problems: string[] = [];
+  cases.forEach((c, i) => {
+    if (!pathExists(c.file, 'file', rootAbs, example)) problems.push(`cases[${i}].file "${c.file}"`);
+    if (c.launchDir !== undefined && !pathExists(c.launchDir, 'dir', rootAbs, example)) problems.push(`cases[${i}].launchDir "${c.launchDir}"`);
+  });
+  if (problems.length > 0) throw new CliError('cli.error.checkPathMissing', { list: problems.join(', '), root: rootLabel }, 'cli.hint.checkPathMissing');
   const results = checkExpectations(index, cases, opts, userRules);
   const { text, failed } = renderCheck(results, t);
   io.stdout(values.json ? `${JSON.stringify({ schemaVersion: 1, root: rootLabel, total: results.length, failed, results }, null, 2)}\n` : text);
@@ -200,6 +214,24 @@ function runCommand(argv: string[], io: Io, t: Translate): number {
 function isDir(p: string): boolean {
   try {
     return fs.statSync(p).isDirectory();
+  } catch {
+    return false;
+  }
+}
+
+/** 작업 공간(디스크 --root 또는 --example 맵)에 그 파일·폴더가 있는지. 루트 밖이면 없는 것으로 본다. */
+function pathExists(rel: string, kind: 'file' | 'dir', rootAbs: string | undefined, example: DemoWorkspace | undefined): boolean {
+  const clean = normalizeRel(rel);
+  const isRoot = clean === '' || clean === '.';
+  if (example) {
+    const keys = Object.keys(example.files);
+    if (kind === 'file') return keys.includes(clean);
+    return isRoot || keys.some((k) => k.startsWith(`${clean}/`));
+  }
+  if (!rootAbs) return false;
+  try {
+    const st = fs.statSync(path.resolve(rootAbs, clean));
+    return kind === 'file' ? st.isFile() : st.isDirectory();
   } catch {
     return false;
   }

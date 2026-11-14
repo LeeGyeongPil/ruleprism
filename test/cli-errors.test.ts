@@ -76,4 +76,97 @@ describe('CLI error paths', () => {
     expect(r.stderr).toContain('error: 알 수 없는 명령 "frobnicate"');
     expect(r.stderr).toContain('hint: "ruleprism --help" 로');
   });
+
+  describe('paths that do not exist in the workspace', () => {
+    const ws = path.join(base, 'ws');
+    fs.mkdirSync(path.join(ws, 'src', 'web'), { recursive: true });
+    fs.writeFileSync(path.join(ws, 'AGENTS.md'), 'rules');
+    fs.writeFileSync(path.join(ws, 'src', 'a.ts'), 'x');
+    const write = (name: string, cases: object[]) => {
+      fs.writeFileSync(path.join(ws, name), JSON.stringify({ cases }));
+      return name;
+    };
+
+    it('check: a missing file exits 2 and names it (a)', () => {
+      const f = write('typo-file.json', [{ file: 'src/Buton.tsx', agent: 'codex', excludes: ['x/AGENTS.md'] }]);
+      const r = runCli(['check', f, '--root', ws], { env: EN, cwd: ws });
+      expect(r.code).toBe(2);
+      expect(r.stdout).toBe('');
+      expect(r.stderr).toMatch(/^error: /);
+      expect(r.stderr).toContain('cases[0].file "src/Buton.tsx"');
+      expect(r.stderr).toMatch(/^hint: /m);
+    });
+
+    it('check: a missing launchDir exits 2, and every problem is listed once (b)', () => {
+      const f = write('typo-dir.json', [
+        { file: 'src/a.ts', agent: 'codex', launchDir: 'src/wbe' },
+        { file: 'src/a.ts', agent: 'codex', launchDir: 'src/web' },
+        { file: 'nope.ts', agent: 'codex' },
+      ]);
+      const r = runCli(['check', f, '--root', ws], { env: EN, cwd: ws });
+      expect(r.code).toBe(2);
+      expect(r.stderr).toContain('cases[0].launchDir "src/wbe"');
+      expect(r.stderr).toContain('cases[2].file "nope.ts"');
+      expect(r.stderr).not.toContain('cases[1]');
+    });
+
+    it('check: a folder given as file, or a file given as launchDir, is a problem too', () => {
+      const f = write('wrong-kind.json', [{ file: 'src', agent: 'codex' }, { file: 'src/a.ts', agent: 'codex', launchDir: 'AGENTS.md' }]);
+      const r = runCli(['check', f, '--root', ws], { env: EN, cwd: ws });
+      expect(r.code).toBe(2);
+      expect(r.stderr).toContain('cases[0].file "src"');
+      expect(r.stderr).toContain('cases[1].launchDir "AGENTS.md"');
+    });
+
+    it('check: existing paths still pass on disk', () => {
+      const f = write('ok.json', [{ file: 'src/a.ts', agent: 'codex', includes: ['AGENTS.md'], launchDir: 'src/web' }]);
+      const r = runCli(['check', f, '--root', ws], { env: EN, cwd: ws });
+      expect(r.code).toBe(0);
+    });
+
+    it('check: the bundled expectation files keep their exit codes (c)', () => {
+      expect(runCli(['check', 'ruleprism.expect.json', '--example', 'mixed-monorepo'], { env: EN }).code).toBe(0);
+      expect(runCli(['check', 'ruleprism.expect.fail.json', '--example', 'mixed-monorepo'], { env: EN }).code).toBe(1);
+    });
+
+    it('check: an example workspace is checked against its file map', () => {
+      const f = write('ex.json', [{ file: 'src/web/components/Button.tsx', agent: 'codex', launchDir: 'src/web' }, { file: 'ghost.ts', agent: 'codex' }]);
+      const r = runCli(['check', path.join(ws, f), '--example', 'mixed-monorepo'], { env: EN });
+      expect(r.code).toBe(2);
+      expect(r.stderr).toContain('cases[1].file "ghost.ts"');
+      expect(r.stderr).not.toContain('cases[0]');
+    });
+
+    it('check: the message is translated', () => {
+      const f = write('ko.json', [{ file: 'nope.ts', agent: 'codex' }]);
+      const r = runCli(['check', f, '--root', ws, '--lang', 'ko'], { cwd: ws });
+      expect(r.code).toBe(2);
+      expect(r.stderr).toContain('없는 경로가 있습니다');
+      expect(r.stderr).toContain('cases[0].file "nope.ts"');
+    });
+
+    it('which: a missing file or launch folder warns on stderr but still exits 0 (d)', () => {
+      const r = runCli(['which', 'nope.ts', '--root', ws, '--launch-dir', 'nope'], { env: EN });
+      expect(r.code).toBe(0);
+      expect(r.stdout).toContain('nope.ts');
+      expect(r.stderr).toContain('warning: "nope.ts" does not exist');
+      expect(r.stderr).toContain('warning: launch folder "nope" does not exist');
+      expect(r.stderr).not.toMatch(/^error:/m);
+    });
+
+    it('which --json: warnings stay on stderr and stdout is valid JSON (d)', () => {
+      const r = runCli(['which', 'nope.ts', '--root', ws, '--launch-dir', 'nope', '--json'], { env: EN });
+      expect(r.code).toBe(0);
+      expect(JSON.parse(r.stdout).schemaVersion).toBe(1);
+      expect(r.stderr).toContain('warning:');
+      const clean = runCli(['which', 'src/a.ts', '--root', ws, '--launch-dir', 'src/web', '--json'], { env: EN });
+      expect(clean.stderr).toBe('');
+    });
+
+    it('which: the warning is translated', () => {
+      const r = runCli(['which', 'nope.ts', '--root', ws, '--lang', 'ko']);
+      expect(r.code).toBe(0);
+      expect(r.stderr).toContain('경고: "nope.ts" 이(가) 작업 공간');
+    });
+  });
 });
