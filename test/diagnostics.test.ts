@@ -96,6 +96,24 @@ describe('rule match counts (CodeLens and RP007)', () => {
     expect(ruleMatches(index, rule('.claude/rules/general.md'))).toMatchObject({ scoped: false });
   });
 
+  it('sorts diagnostics the same way whatever the machine locale is (regression: Linux CI)', () => {
+    // 리눅스 CI(LANG=C.UTF-8)는 ICU 기본 로캘이 en-US-u-va-posix 라 localeCompare 순서가 macOS 와 다르다.
+    const idx = scanWorkspace(memoryReader({ '.claude/rules/alpha.md': '---\npaths: "zzz/**"\n---\n', '.claude/rules/Zeta.md': '---\npaths: "yyy/**"\n---\n', 'a.ts': '' }));
+    const files = () => computeDiagnostics(idx).filter((d) => d.code === 'RP007').map((d) => d.file);
+    const expected = ['.claude/rules/Zeta.md', '.claude/rules/alpha.md']; // 문자 코드 순: 'Z'(0x5A) < 'a'(0x61)
+    expect(files()).toEqual(expected);
+    const original = String.prototype.localeCompare;
+    try {
+      // 기본 로캘을 바꾼 것처럼 localeCompare 를 뒤집어도 결과가 같아야 한다.
+      String.prototype.localeCompare = function (this: string, that: string) {
+        return -original.call(this, that);
+      } as typeof original;
+      expect(files()).toEqual(expected);
+    } finally {
+      String.prototype.localeCompare = original;
+    }
+  });
+
   it('marks RP007 as approximate when the file list hit the limit', () => {
     const idx = scanWorkspace(memoryReader({ '.claude/rules/x.md': '---\npaths: "zzz/**"\n---\n', 'a.ts': '', 'b.ts': '' }, { maxFiles: 2 }));
     const d = computeDiagnostics(idx).find((x) => x.code === 'RP007')!;

@@ -10,6 +10,7 @@ tsconfig.json
 vitest.config.ts
 .gitignore
 .npmignore
+.gitattributes
 *.vsix
 ruleprism-demo/**
 node_modules/yaml/browser/**

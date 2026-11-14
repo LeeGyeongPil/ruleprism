@@ -167,5 +167,8 @@ export function computeDiagnostics(index: RuleIndex, options: Partial<ResolveOpt
   }
 
   const rank = { error: 0, warning: 1, info: 2 } as const;
-  return out.sort((a, b) => a.file.localeCompare(b.file) || a.line - b.line || a.code.localeCompare(b.code) || rank[a.severity] - rank[b.severity]);
+  // localeCompare 는 기계의 ICU 기본 로캘(LANG=C 인 리눅스 CI 는 en-US-u-va-posix)에 따라 순서가 바뀐다.
+  // 어느 기계에서나 같은 순서가 나오도록 문자 코드 순으로 정렬한다.
+  const byCodePoint = (x: string, y: string) => (x < y ? -1 : x > y ? 1 : 0);
+  return out.sort((a, b) => byCodePoint(a.file, b.file) || a.line - b.line || byCodePoint(a.code, b.code) || rank[a.severity] - rank[b.severity]);
 }

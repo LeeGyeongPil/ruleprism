@@ -3,13 +3,13 @@ import { spawnSync } from 'node:child_process';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import { afterAll, describe, expect, it } from 'vitest';
-import { REPO, tempDir } from './helpers';
+import { CHILD_TIMEOUT_MS, REPO, tempDir } from './helpers';
 
 const out = tempDir('preview');
 afterAll(() => fs.rmSync(out, { recursive: true, force: true }));
 
 describe('static preview', () => {
-  const r = spawnSync(process.execPath, [path.join(REPO, 'out/preview/render.js'), '--out', out], { encoding: 'utf8' });
+  const r = spawnSync(process.execPath, [path.join(REPO, 'out/preview/render.js'), '--out', out], { encoding: 'utf8', timeout: CHILD_TIMEOUT_MS });
 
   it('writes sidebar.en.html and sidebar.ko.html', () => {
     expect(r.status).toBe(0);

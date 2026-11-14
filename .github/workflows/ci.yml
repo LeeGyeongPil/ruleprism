@@ -7,10 +7,16 @@ on:
   schedule:
     - cron: "17 3 * * 1"   # 매주 월요일 — 의존성·런타임이 바뀌어 깨지지 않았는지 정기 확인
   workflow_dispatch:
+# 저장소를 읽기만 한다(토큰 권한 최소화).
+permissions:
+  contents: read
 jobs:
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     strategy:
+      # 한 Node 버전이 실패해도 다른 버전 결과를 끝까지 본다.
+      fail-fast: false
       matrix:
         node-version: [22.x, lts/*]
     steps:
@@ -19,6 +25,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: npm
+      - run: node --version && npm --version
       - run: npm ci
       - run: npm test
       - run: npm run typecheck

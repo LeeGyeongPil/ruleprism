@@ -1,0 +1,4 @@
+# 어느 OS 에서 clone 해도 텍스트는 LF 로 둔다(테스트 기대값·프런트매터 줄 번호가 같게).
+* text=auto eol=lf
+*.png binary
+*.vsix binary
