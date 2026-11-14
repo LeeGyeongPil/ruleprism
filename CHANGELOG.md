@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.1
+
+### Security
+
+- Override transitive dev dependency minimatch (via @vscode/vsce) to 11.0.8 to address GHSA-g3hv-75wg-m249. Packaging-time only; the published extension and CLI runtime were not affected.
+
 ## 0.1.0
 
 - Rule files are always found even when the workspace has more than 20,000 files; RP010 (info) notes that dead-rule counts are then approximate.
