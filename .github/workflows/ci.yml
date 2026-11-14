@@ -1,0 +1,26 @@
+# 키·네트워크 없이 코어·CLI 테스트, 타입 검사, VSIX 패키징을 확인한다.
+# (확장 호스트 테스트는 다음 버전 계획: xvfb + @vscode/test-electron)
+name: ci
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: "17 3 * * 1"   # 매주 월요일 — 의존성·런타임이 바뀌어 깨지지 않았는지 정기 확인
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [22.x, lts/*]
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-node@v7.1.0
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run typecheck
+      - run: npm run package
+      - run: npm run preview
