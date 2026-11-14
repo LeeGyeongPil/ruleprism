@@ -1,0 +1,244 @@
+{
+  "schemaVersion": 1,
+  "file": "src/web/components/Button.tsx",
+  "launchDir": "",
+  "agents": {
+    "claude": {
+      "entries": [
+        {
+          "order": 1,
+          "file": "CLAUDE.md",
+          "reason": "launch-ancestor",
+          "certainty": "certain",
+          "approxTokens": 21,
+          "detail": "."
+        },
+        {
+          "order": 2,
+          "file": ".claude/rules/broken.md",
+          "reason": "rule-yaml-error",
+          "certainty": "certain",
+          "approxTokens": 9
+        },
+        {
+          "order": 3,
+          "file": ".claude/rules/general.md",
+          "reason": "rule-unconditional",
+          "certainty": "certain",
+          "approxTokens": 11
+        },
+        {
+          "order": 4,
+          "file": ".claude/rules/globs-only.md",
+          "reason": "rule-globs-not-paths",
+          "certainty": "certain",
+          "approxTokens": 18
+        },
+        {
+          "order": 5,
+          "file": "src/web/CLAUDE.md",
+          "reason": "on-demand-subdir",
+          "certainty": "conditional",
+          "approxTokens": 18,
+          "detail": "src/web"
+        },
+        {
+          "order": 6,
+          "file": ".claude/rules/frontend/tsx.md",
+          "reason": "paths-matched",
+          "certainty": "conditional",
+          "approxTokens": 14,
+          "detail": "src/**/*.tsx"
+        },
+        {
+          "order": 7,
+          "file": ".claude/rules/ts.md",
+          "reason": "paths-matched",
+          "certainty": "conditional",
+          "approxTokens": 13,
+          "detail": "src/**/*.{ts,tsx}"
+        }
+      ],
+      "skipped": [
+        {
+          "file": "AGENTS.md",
+          "reason": "skip-agents-md-shadowed",
+          "detail": "CLAUDE.md"
+        },
+        {
+          "file": "src/web/AGENTS.md",
+          "reason": "skip-agents-md-shadowed",
+          "detail": "src/web/CLAUDE.md"
+        }
+      ],
+      "approxTokens": 104,
+      "ordering": "context-order"
+    },
+    "copilot": {
+      "entries": [
+        {
+          "order": 1,
+          "file": ".github/copilot-instructions.md",
+          "reason": "repo-wide",
+          "certainty": "certain",
+          "approxTokens": 19
+        },
+        {
+          "order": 2,
+          "file": ".github/instructions/ts.instructions.md",
+          "reason": "applyto-matched",
+          "certainty": "certain",
+          "approxTokens": 12,
+          "detail": "**/*.tsx"
+        },
+        {
+          "order": 3,
+          "file": "AGENTS.md",
+          "reason": "workspace-agents-md",
+          "certainty": "certain",
+          "approxTokens": 18
+        },
+        {
+          "order": 4,
+          "file": "CLAUDE.md",
+          "reason": "workspace-claude-md",
+          "certainty": "certain",
+          "approxTokens": 21
+        },
+        {
+          "order": 5,
+          "file": ".claude/rules/broken.md",
+          "reason": "claude-rule-in-copilot",
+          "certainty": "uncertain",
+          "approxTokens": 9
+        },
+        {
+          "order": 6,
+          "file": ".claude/rules/frontend/tsx.md",
+          "reason": "claude-rule-paths-in-copilot",
+          "certainty": "uncertain",
+          "approxTokens": 14,
+          "detail": "src/**/*.tsx"
+        },
+        {
+          "order": 7,
+          "file": ".claude/rules/general.md",
+          "reason": "claude-rule-in-copilot",
+          "certainty": "uncertain",
+          "approxTokens": 11
+        },
+        {
+          "order": 8,
+          "file": ".claude/rules/globs-only.md",
+          "reason": "claude-rule-in-copilot",
+          "certainty": "uncertain",
+          "approxTokens": 18
+        },
+        {
+          "order": 9,
+          "file": ".claude/rules/ts.md",
+          "reason": "claude-rule-paths-in-copilot",
+          "certainty": "uncertain",
+          "approxTokens": 13,
+          "detail": "src/**/*.{ts,tsx}"
+        }
+      ],
+      "skipped": [],
+      "approxTokens": 135,
+      "ordering": "merged"
+    },
+    "cursor": {
+      "entries": [
+        {
+          "order": 1,
+          "file": ".cursor/rules/always.mdc",
+          "reason": "always-apply",
+          "certainty": "certain",
+          "approxTokens": 8
+        },
+        {
+          "order": 2,
+          "file": ".cursor/rules/react.mdc",
+          "reason": "globs-matched",
+          "certainty": "certain",
+          "approxTokens": 7,
+          "detail": "src/web/**/*.tsx"
+        },
+        {
+          "order": 3,
+          "file": ".cursor/rules/req.mdc",
+          "reason": "agent-requested",
+          "certainty": "uncertain",
+          "approxTokens": 8
+        },
+        {
+          "order": 4,
+          "file": "AGENTS.md",
+          "reason": "cursor-agents-md",
+          "certainty": "certain",
+          "approxTokens": 18,
+          "detail": "."
+        },
+        {
+          "order": 5,
+          "file": "src/web/AGENTS.md",
+          "reason": "cursor-agents-md",
+          "certainty": "certain",
+          "approxTokens": 16,
+          "detail": "src/web"
+        }
+      ],
+      "skipped": [
+        {
+          "file": ".cursor/rules/manual.mdc",
+          "reason": "skip-manual"
+        }
+      ],
+      "approxTokens": 57,
+      "ordering": "merged"
+    },
+    "codex": {
+      "entries": [
+        {
+          "order": 1,
+          "file": "AGENTS.md",
+          "reason": "codex-chain",
+          "certainty": "certain",
+          "approxTokens": 18
+        }
+      ],
+      "skipped": [
+        {
+          "file": "src/web/AGENTS.md",
+          "reason": "skip-not-in-chain",
+          "detail": "."
+        }
+      ],
+      "approxTokens": 18,
+      "ordering": "context-order"
+    },
+    "gemini": {
+      "entries": [
+        {
+          "order": 1,
+          "file": "GEMINI.md",
+          "reason": "gemini-launch",
+          "certainty": "certain",
+          "approxTokens": 15,
+          "detail": "."
+        },
+        {
+          "order": 2,
+          "file": "src/web/GEMINI.md",
+          "reason": "gemini-jit",
+          "certainty": "conditional",
+          "approxTokens": 12,
+          "detail": "src/web"
+        }
+      ],
+      "skipped": [],
+      "approxTokens": 27,
+      "ordering": "context-order"
+    }
+  }
+}
