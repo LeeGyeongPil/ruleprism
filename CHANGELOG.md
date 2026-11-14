@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.1.2
+
+### Fixed
+
+- CI workflow stability: runner pinned to ubuntu-24.04, Node 22.x and 26.x matrix, named steps, GitHub Actions test reporter, and a diagnostics step that runs on failure.
+
+### Documentation
+
+- README.ko.md now shows the Korean `check` output (`3건 중 3건 통과`) and notes that the wording follows the output language.
+
 ## 0.1.1
 
 ### Security

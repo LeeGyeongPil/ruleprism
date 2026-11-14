@@ -37,7 +37,7 @@ Ruleprism 은 아직 VS Code 마켓플레이스나 npm 에 없습니다. 소스�
 git clone https://github.com/LeeGyeongPil/ruleprism.git
 cd ruleprism
 npm install
-npm run package          # ruleprism-0.1.1.vsix 생성
+npm run package          # ruleprism-0.1.2.vsix 생성
 ```
 
 npm 11 에서는 `@vscode/vsce-sign` 과 `fsevents` 의 설치 스크립트가 실행되지 않았다는 경고가 보일 수 있습니다. 정상이며 `npm run package` 에는 영향이 없습니다.
@@ -45,7 +45,7 @@ npm 11 에서는 `@vscode/vsce-sign` 과 `fsevents` 의 설치 스크립트가 �
 `.vsix` 는 VS Code CLI 로 설치하거나, VS Code 명령 팔레트에서 **Extensions: Install from VSIX...** 를 실행합니다.
 
 ```bash
-code --install-extension ruleprism-0.1.1.vsix
+code --install-extension ruleprism-0.1.2.vsix
 ```
 
 VS Code 없이 CLI 만 써 보려면:
@@ -164,7 +164,7 @@ node out/cli/main.js check ruleprism.expect.fail.json --example mixed-monorepo
 ```
 
 ![실패 2건이 나온 check 출력](docs/images/05-check-fail.ko.png)
-*종료 코드 1, 빠진 규칙마다 `FAIL` 한 줄. 통과하는 예제 `ruleprism.expect.json` 은 `3/3 cases passed` 를 출력하고 0으로 끝납니다.*
+*종료 코드 1, 빠진 규칙마다 `FAIL` 한 줄. 통과하는 예제 `ruleprism.expect.json` 은 한국어 출력에서 `3건 중 3건 통과`(영어 출력은 `3/3 cases passed`)를 내고 0으로 끝납니다.*
 
 `which`·`lint`·`check` 에 `--json` 을 붙이면 기계가 읽는 출력(`"schemaVersion": 1`)이 나옵니다. 종료 코드: 0 정상, 1 `check` 실패 또는 `lint` 가 문제 발견, 2 사용법·입력 오류(stderr 에 `error:` 와 `hint:` 줄).
 
@@ -182,7 +182,7 @@ node out/cli/main.js check ruleprism.expect.fail.json --example mixed-monorepo
 
 ### CI 에서 쓰기
 
-`ruleprism check` 는 기대 파일(위 참고)을 읽어 모든 항목이 통과하면 종료 코드 0, 실패하면 1, 사용법·입력 오류면 2 를 냅니다. Ruleprism 은 아직 npm 에 없으므로 아래 작업은 태그가 붙은 릴리스(`v0.1.1`)를 clone 해 빌드한 뒤 내 레포에 `check` 를 실행합니다. `actions/setup-node` 가 Node 를 `PATH` 에 넣어 주며, 액션 버전은 이 레포 자체 CI 가 쓰는 것과 같습니다.
+`ruleprism check` 는 기대 파일(위 참고)을 읽어 모든 항목이 통과하면 종료 코드 0, 실패하면 1, 사용법·입력 오류면 2 를 냅니다. Ruleprism 은 아직 npm 에 없으므로 아래 작업은 태그가 붙은 릴리스(`v0.1.2`)를 clone 해 빌드한 뒤 내 레포에 `check` 를 실행합니다. `actions/setup-node` 가 Node 를 `PATH` 에 넣어 주며, 액션 버전은 이 레포 자체 CI 가 쓰는 것과 같습니다.
 
 ```yaml
 name: rules
@@ -197,7 +197,7 @@ jobs:
           node-version: 22.x
       - name: Build ruleprism
         run: |
-          git clone --depth 1 --branch v0.1.1 https://github.com/LeeGyeongPil/ruleprism.git "$RUNNER_TEMP/ruleprism"
+          git clone --depth 1 --branch v0.1.2 https://github.com/LeeGyeongPil/ruleprism.git "$RUNNER_TEMP/ruleprism"
           cd "$RUNNER_TEMP/ruleprism"
           npm ci
           npm run compile
@@ -205,7 +205,7 @@ jobs:
         run: node "$RUNNER_TEMP/ruleprism/out/cli/main.js" check ruleprism.expect.json
 ```
 
-같은 단계를 깨끗한 폴더에서 실행해 봤습니다. 빌드 뒤 연습용 작업 공간에 `check ruleprism.expect.json` 은 `3/3 cases passed`(종료 0), `check ruleprism.expect.fail.json` 은 `FAIL` 두 줄과 `0/2 cases passed`(종료 1, 작업 실패)를 냈습니다. `lint` 단계도 같은 방식으로 더할 수 있습니다(`... lint`, 경고가 있으면 종료 1, `--fail-on` 으로 변경).
+같은 단계를 깨끗한 폴더에서 실행해 봤습니다. 빌드 뒤 연습용 작업 공간에 `check ruleprism.expect.json` 은 `3건 중 3건 통과`(영어 출력 `3/3 cases passed`, 종료 0), `check ruleprism.expect.fail.json` 은 `FAIL` 두 줄과 `2건 중 0건 통과`(영어 출력 `0/2 cases passed`, 종료 1, 작업 실패)를 냈습니다. `lint` 단계도 같은 방식으로 더할 수 있습니다(`... lint`, 경고가 있으면 종료 1, `--fail-on` 으로 변경).
 
 ### 언어
 
