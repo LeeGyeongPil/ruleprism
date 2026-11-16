@@ -2,7 +2,7 @@
   "name": "ruleprism",
   "displayName": "Ruleprism",
   "description": "%ext.description%",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "publisher": "leegyeongpil",
   "license": "MIT",
   "repository": {
@@ -44,7 +44,6 @@
   "bin": {
     "ruleprism": "out/cli/main.js"
   },
-  "l10n": "./l10n",
   "contributes": {
     "views": {
       "explorer": [
