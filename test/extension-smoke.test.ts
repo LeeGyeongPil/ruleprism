@@ -114,7 +114,6 @@ const vscodeStub = {
   CodeActionKind: { QuickFix: 'quickfix' },
   ConfigurationTarget: { Global: 1, Workspace: 2 },
   env: { language: 'en', clipboard },
-  l10n: { t: (s: string) => s },
   languages: {
     createDiagnosticCollection: () => ({
       set: (uri: Uri, list: VDiagnostic[]) => diags.set(uri.fsPath, list),
@@ -251,6 +250,22 @@ describe('extension adapter (stubbed vscode)', () => {
     config['ruleprism.language'] = 'ko';
     await commands.get('ruleprism.refresh')!();
     expect(status.text).toBe('$(list-ordered) 규칙: C7 Cp9 Cu6 Cx2 G2');
+  });
+
+  it('shows the launch folder picker in Korean when ruleprism.language is ko and the display language is en', async () => {
+    config['ruleprism.language'] = 'ko';
+    let title: string | undefined;
+    const origPick = vscodeStub.window.showQuickPick;
+    vscodeStub.window.showQuickPick = (async (items: unknown[], o?: { title?: string }) => {
+      title = o?.title;
+      lastPickItems = items;
+      return undefined;
+    }) as typeof origPick;
+    await commands.get('ruleprism.setLaunchFolder')!();
+    vscodeStub.window.showQuickPick = origPick;
+    expect(title).toBe('에이전트를 어디서 띄웠나요?');
+    expect((lastPickItems as { label: string }[]).map((i) => i.label)).toEqual(['워크스페이스 루트', '현재 파일의 폴더', '다른 폴더…']);
+    config['ruleprism.language'] = 'auto';
   });
 
   it('hides the status bar when no file is open, and disposes cleanly', () => {

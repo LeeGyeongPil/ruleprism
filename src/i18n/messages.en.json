@@ -170,5 +170,15 @@
   "preview.caption": "HTML preview generated from the same core as the VS Code extension, not a VS Code screenshot. Practice workspace: {name}.",
   "preview.sidebar": "Rules for this file",
   "preview.problems": "Problems",
-  "preview.status": "Status bar"
+  "preview.status": "Status bar",
+
+  "ext.globPrompt": "Glob pattern to explain",
+  "ext.filePrompt": "File path relative to the workspace root",
+  "ext.openFileFirst": "Open a file in a workspace folder first.",
+  "ext.copiedJson": "Copied the result as JSON.",
+  "ext.pickWorkspaceRoot": "Workspace root",
+  "ext.pickFileFolder": "Folder of the current file",
+  "ext.pickAnother": "Another folder…",
+  "ext.pickTitle": "Where was the agent started?",
+  "ext.folderPrompt": "Folder relative to the workspace root"
 }

@@ -1,4 +1,4 @@
-// AC-7: 영어·한국어 — 언어 결정 순서, 카탈로그 키 일치, 확장 nls·l10n 번들.
+// AC-7: 영어·한국어 — 언어 결정 순서, 카탈로그 키 일치, 확장 nls 매니페스트.
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import { describe, expect, it } from 'vitest';
@@ -75,17 +75,20 @@ describe('catalog parity', () => {
     for (const k of used) expect(nls[k], k).toBeTypeOf('string');
   });
 
-  it('every vscode.l10n.t string in the extension exists in l10n/bundle.l10n.ko.json', () => {
+  it('the extension does not use vscode.l10n.t (language follows ruleprism.language)', () => {
     const ext = fs.readFileSync(path.join(REPO, 'src/extension/extension.ts'), 'utf8');
-    const used = [...ext.matchAll(/l10n\.t\('((?:[^'\\]|\\.)*)'/g)].map((m) => m[1]);
-    expect(used.length).toBeGreaterThan(5);
-    const bundle = readJson('l10n/bundle.l10n.ko.json');
-    for (const s of used) expect(bundle[s], s).toBeTypeOf('string');
-    // 번들에 쓰이지 않는 문자열이 남지 않게
-    for (const k of Object.keys(bundle)) expect(used, k).toContain(k);
+    expect(ext).not.toMatch(/l10n\.t\(/);
+    expect(fs.existsSync(path.join(REPO, 'l10n'))).toBe(false);
+    expect(readJson('package.json').l10n).toBeUndefined();
   });
 
-  it('package.json points VS Code at the l10n folder', () => {
-    expect(readJson('package.json').l10n).toBe('./l10n');
+  it('every t(...) key used by the extension exists in both catalogs', () => {
+    const ext = fs.readFileSync(path.join(REPO, 'src/extension/extension.ts'), 'utf8');
+    const used = [...ext.matchAll(/\bt\('([\w.]+)'/g)].map((m) => m[1]);
+    expect(used.length).toBeGreaterThanOrEqual(9);
+    for (const lang of ['en', 'ko'] as const) {
+      const keys = catalogKeys(lang);
+      for (const k of used) expect(keys, `${lang}:${k}`).toContain(k);
+    }
   });
 });

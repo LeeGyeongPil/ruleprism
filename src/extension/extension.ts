@@ -240,10 +240,10 @@ export function activate(context: vscode.ExtensionContext): void {
 
     vscode.commands.registerCommand('ruleprism.explainPattern', async () => {
       const t = translator();
-      const pattern = await vscode.window.showInputBox({ prompt: vscode.l10n.t('Glob pattern to explain'), value: '*.ts' });
+      const pattern = await vscode.window.showInputBox({ prompt: t('ext.globPrompt'), value: '*.ts' });
       if (!pattern) return;
       const file = await vscode.window.showInputBox({
-        prompt: vscode.l10n.t('File path relative to the workspace root'),
+        prompt: t('ext.filePrompt'),
         value: current?.res.file ?? 'src/x.ts',
       });
       if (!file) return;
@@ -256,26 +256,28 @@ export function activate(context: vscode.ExtensionContext): void {
     }),
 
     vscode.commands.registerCommand('ruleprism.copyJson', async () => {
+      const t = translator();
       if (!current) {
-        void vscode.window.showInformationMessage(vscode.l10n.t('Open a file in a workspace folder first.'));
+        void vscode.window.showInformationMessage(t('ext.openFileFirst'));
         return;
       }
       const json = { schemaVersion: 1, root: current.folder.uri.fsPath, file: current.res.file, launchDir: current.res.launchDir, agents: current.res.agents };
       await vscode.env.clipboard.writeText(JSON.stringify(json, null, 2));
-      void vscode.window.showInformationMessage(vscode.l10n.t('Copied the result as JSON.'));
+      void vscode.window.showInformationMessage(t('ext.copiedJson'));
     }),
 
     vscode.commands.registerCommand('ruleprism.setLaunchFolder', async () => {
+      const t = translator();
       const picks = [
-        { label: vscode.l10n.t('Workspace root'), value: 'workspaceRoot' },
-        { label: vscode.l10n.t('Folder of the current file'), value: 'fileFolder' },
-        { label: vscode.l10n.t('Another folder…'), value: '' },
+        { label: t('ext.pickWorkspaceRoot'), value: 'workspaceRoot' },
+        { label: t('ext.pickFileFolder'), value: 'fileFolder' },
+        { label: t('ext.pickAnother'), value: '' },
       ];
-      const pick = await vscode.window.showQuickPick(picks, { title: vscode.l10n.t('Where was the agent started?') });
+      const pick = await vscode.window.showQuickPick(picks, { title: t('ext.pickTitle') });
       if (!pick) return;
       let value = pick.value;
       if (value === '') {
-        const typed = await vscode.window.showInputBox({ prompt: vscode.l10n.t('Folder relative to the workspace root'), value: 'src' });
+        const typed = await vscode.window.showInputBox({ prompt: t('ext.folderPrompt'), value: 'src' });
         if (!typed) return;
         value = typed;
       }

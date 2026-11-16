@@ -170,5 +170,15 @@
   "preview.caption": "VS Code 확장과 같은 코어로 만든 HTML 미리보기이며 VS Code 화면이 아닙니다. 연습용 작업 공간: {name}.",
   "preview.sidebar": "이 파일에 붙는 규칙",
   "preview.problems": "문제",
-  "preview.status": "상태 표시줄"
+  "preview.status": "상태 표시줄",
+
+  "ext.globPrompt": "설명할 글롭 패턴",
+  "ext.filePrompt": "워크스페이스 루트 기준 파일 경로",
+  "ext.openFileFirst": "먼저 작업 공간 폴더 안의 파일을 여세요.",
+  "ext.copiedJson": "결과를 JSON 으로 복사했습니다.",
+  "ext.pickWorkspaceRoot": "워크스페이스 루트",
+  "ext.pickFileFolder": "현재 파일의 폴더",
+  "ext.pickAnother": "다른 폴더…",
+  "ext.pickTitle": "에이전트를 어디서 띄웠나요?",
+  "ext.folderPrompt": "워크스페이스 루트 기준 폴더"
 }
