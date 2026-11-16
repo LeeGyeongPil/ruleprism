@@ -252,7 +252,6 @@ flowchart LR
 ## 알려진 한계
 
 - 판정은 문서 기준이며 에이전트를 관찰한 것이 아닙니다. 에이전트 버전에 따라 동작이 바뀔 수 있습니다.
-- `ruleprism.language` 설정은 뷰·이유·진단에 적용됩니다. 확장의 입력창·선택 목록·안내 메시지(**패턴 설명…**, **작업 폴더 설정…** 등)는 VS Code 표시 언어를 따르므로, `ruleprism.language` 를 VS Code 와 다른 언어로 바꾸면 두 언어가 섞여 보입니다. `auto` 에서는 섞이지 않습니다.
 - Cursor 에서 `*.ts` 처럼 `/` 가 없는 패턴은 불일치로 표시하지만 Cursor 문서에는 명시가 없어 가정입니다. `explain` 에서는 아직 `?` 로 표시하지 않습니다.
 - Cursor 그룹에는 루트와 하위 폴더의 `AGENTS.md` 가 모두 나타납니다. 이유 문구의 "the closest one wins" 는 지침이 충돌할 때 어느 파일이 우선하는지를 뜻하며, 다른 파일이 빠진다는 뜻이 아닙니다.
 - 아직 모델링하지 않은 것: `@path` 가져오기, Claude `claudeMdExcludes`, 관리형 정책 파일, 심볼릭 링크 규칙, Codex `project_doc_fallback_filenames`, Gemini `@file` 가져오기. 전체 목록: [docs/sources.md](docs/sources.md).
@@ -273,7 +272,7 @@ flowchart LR
 
 ```bash
 npm install
-npm test               # 컴파일 후 테스트 130개 실행
+npm test               # 컴파일 후 테스트 131개 실행
 npm run typecheck
 npm run package        # .vsix 생성
 npm run preview        # docs/preview/sidebar.en.html, sidebar.ko.html 생성

@@ -252,7 +252,6 @@ flowchart LR
 ## Known limits
 
 - Verdicts come from documentation, not from watching an agent. Behavior can change between agent versions.
-- The `ruleprism.language` setting covers the view, reasons and diagnostics. The extension's prompts, pickers and info messages (for example in **Explain pattern…** and **Set launch folder…**) follow the VS Code display language instead, so setting `ruleprism.language` to a different language than VS Code gives mixed-language output. With `auto` nothing is mixed.
 - For Cursor, a pattern without `/` such as `*.ts` is shown as no match, but the Cursor docs do not state this; it is an assumption and is not marked `?` in `explain` yet.
 - In the Cursor group, `AGENTS.md` files in the root and in subfolders all appear. "The closest one wins" in the reason text describes which file takes precedence if instructions conflict, not that the others are left out.
 - Not modeled yet: `@path` imports, Claude `claudeMdExcludes`, managed policy files, symlinked rules, Codex `project_doc_fallback_filenames`, Gemini `@file` imports. Full list: [docs/sources.md](docs/sources.md).
@@ -273,7 +272,7 @@ flowchart LR
 
 ```bash
 npm install
-npm test               # compiles, then runs 130 tests
+npm test               # compiles, then runs 131 tests
 npm run typecheck
 npm run package        # builds the .vsix
 npm run preview        # writes docs/preview/sidebar.en.html and sidebar.ko.html

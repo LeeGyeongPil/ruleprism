@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.4
+
+### Fixed
+
+- The extension's prompts, pickers and info messages (Explain pattern, Copy as JSON, Set launch folder) now follow the `ruleprism.language` setting instead of the VS Code display language, so the screen is no longer mixed-language. The command titles and setting descriptions in the manifest still follow the VS Code display language.
+
 ## 0.1.3
 
 ### Fixed
