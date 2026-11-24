@@ -124,6 +124,31 @@ describe('CLI error paths', () => {
       expect(r.code).toBe(0);
     });
 
+    it('check: a launchDir outside the root (existing folder) exits 2', () => {
+      const f = write('outside-dir.json', [{ file: 'src/a.ts', agent: 'codex', launchDir: '../..' }]);
+      const r = runCli(['check', f, '--root', ws], { env: EN, cwd: ws });
+      expect(r.code).toBe(2);
+      expect(r.stderr).toContain('cases[0].launchDir "../.."');
+    });
+
+    it('check: a file outside the root (existing file) exits 2', () => {
+      const outside = path.join(path.dirname(ws), `outside-${path.basename(ws)}.txt`);
+      fs.writeFileSync(outside, 'x');
+      try {
+        const f = write('outside-file.json', [{ file: `../${path.basename(outside)}`, agent: 'codex' }]);
+        const r = runCli(['check', f, '--root', ws], { env: EN, cwd: ws });
+        expect(r.code).toBe(2);
+        expect(r.stderr).toContain('cases[0].file');
+      } finally {
+        fs.rmSync(outside, { force: true });
+      }
+    });
+
+    it('check: "." as launchDir still passes', () => {
+      const f = write('dot.json', [{ file: 'src/a.ts', agent: 'codex', launchDir: '.' }]);
+      expect(runCli(['check', f, '--root', ws], { env: EN, cwd: ws }).code).toBe(0);
+    });
+
     it('check: the bundled expectation files keep their exit codes (c)', () => {
       expect(runCli(['check', 'ruleprism.expect.json', '--example', 'mixed-monorepo'], { env: EN }).code).toBe(0);
       expect(runCli(['check', 'ruleprism.expect.fail.json', '--example', 'mixed-monorepo'], { env: EN }).code).toBe(1);

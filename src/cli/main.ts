@@ -230,7 +230,11 @@ function pathExists(rel: string, kind: 'file' | 'dir', rootAbs: string | undefin
   }
   if (!rootAbs) return false;
   try {
-    const st = fs.statSync(path.resolve(rootAbs, clean));
+    const abs = path.resolve(rootAbs, clean);
+    const rel = path.relative(rootAbs, abs);
+    // Outside the root (".." prefix or a different drive) counts as missing.
+    if (rel === '..' || rel.startsWith(`..${path.sep}`) || path.isAbsolute(rel)) return false;
+    const st = fs.statSync(abs);
     return kind === 'file' ? st.isFile() : st.isDirectory();
   } catch {
     return false;
