@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.7
+
+### Fixed
+
+- `ruleprism which --launch-dir <file>` now warns that the launch folder is a file, not a folder, instead of wrongly saying it does not exist. Warning text only; exit code and results are unchanged.
+
 ## 0.1.6
 
 ### Fixed
