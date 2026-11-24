@@ -37,7 +37,7 @@ Ruleprism is not on the VS Code Marketplace or npm yet. Build it from source:
 git clone https://github.com/LeeGyeongPil/ruleprism.git
 cd ruleprism
 npm install
-npm run package          # creates ruleprism-0.1.3.vsix
+npm run package          # creates ruleprism-0.1.4.vsix
 ```
 
 With npm 11 you may see a warning that install scripts of `@vscode/vsce-sign` and `fsevents` were not run. This is expected and harmless: `npm run package` still works.
@@ -45,7 +45,7 @@ With npm 11 you may see a warning that install scripts of `@vscode/vsce-sign` an
 Install the `.vsix` with the VS Code CLI, or in VS Code run **Extensions: Install from VSIX...** from the Command Palette:
 
 ```bash
-code --install-extension ruleprism-0.1.3.vsix
+code --install-extension ruleprism-0.1.4.vsix
 ```
 
 To try the CLI without VS Code:
@@ -182,7 +182,7 @@ A short summary; the full tables with source URLs are in [docs/sources.md](docs/
 
 ### Use in CI
 
-`ruleprism check` reads an expectation file (see above) and exits 0 when every case passes, 1 when a case fails, 2 on a usage or input error. Ruleprism is not on npm yet, so the job below clones a tagged release (`v0.1.3`), builds it, and runs `check` against your repository. `actions/setup-node` puts Node on the `PATH`; the action versions are the ones this repository's own CI uses.
+`ruleprism check` reads an expectation file (see above) and exits 0 when every case passes, 1 when a case fails, 2 on a usage or input error. Ruleprism is not on npm yet, so the job below clones a tagged release (`v0.1.4`), builds it, and runs `check` against your repository. `actions/setup-node` puts Node on the `PATH`; the action versions are the ones this repository's own CI uses.
 
 ```yaml
 name: rules
@@ -197,7 +197,7 @@ jobs:
           node-version: 22.x
       - name: Build ruleprism
         run: |
-          git clone --depth 1 --branch v0.1.3 https://github.com/LeeGyeongPil/ruleprism.git "$RUNNER_TEMP/ruleprism"
+          git clone --depth 1 --branch v0.1.4 https://github.com/LeeGyeongPil/ruleprism.git "$RUNNER_TEMP/ruleprism"
           cd "$RUNNER_TEMP/ruleprism"
           npm ci
           npm run compile
