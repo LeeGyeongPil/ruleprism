@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.5
+
+### Fixed
+
+- README install steps now use the matching `ruleprism-0.1.5.vsix` file name and the `v0.1.5` tag in the CI example (README.md and README.ko.md). No code changes.
+
 ## 0.1.4
 
 ### Fixed

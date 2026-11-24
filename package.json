@@ -2,7 +2,7 @@
   "name": "ruleprism",
   "displayName": "Ruleprism",
   "description": "%ext.description%",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "publisher": "leegyeongpil",
   "license": "MIT",
   "repository": {
