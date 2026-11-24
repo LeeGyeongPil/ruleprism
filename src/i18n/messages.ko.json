@@ -151,6 +151,7 @@
   "cli.hint.checkPathMissing": "기대 파일의 경로를 고치세요. 경로는 작업 공간 루트 기준입니다",
   "cli.warn.fileMissing": "경고: \"{file}\" 이(가) 작업 공간 {root} 에 없습니다. 만들어진다고 가정한 결과를 보여 줍니다",
   "cli.warn.launchDirMissing": "경고: 작업 폴더 \"{dir}\" 이(가) 작업 공간 {root} 에 없습니다",
+  "cli.warn.launchDirNotDir": "경고: 작업 폴더 \"{dir}\" 은(는) 폴더가 아니라 파일입니다",
   "cli.error.expectUnreadable": "기대 파일 \"{file}\" 을(를) 읽을 수 없습니다({error})",
   "cli.hint.expectUnreadable": "경로와 권한을 확인하세요. 경로는 현재 폴더 기준입니다",
   "cli.error.expectFormat": "기대 파일 \"{file}\" 형식이 올바르지 않습니다: {detail}",

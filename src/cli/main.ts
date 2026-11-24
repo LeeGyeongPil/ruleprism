@@ -167,7 +167,9 @@ function runCommand(argv: string[], io: Io, t: Translate): number {
     if (command === 'which') {
       if (!pathExists(file, 'file', rootAbs, example)) io.stderr(`${t('cli.warn.fileMissing', { file: rest[0], root: rootLabel })}\n`);
       if (opts.launchDir !== undefined && !pathExists(opts.launchDir, 'dir', rootAbs, example)) {
-        io.stderr(`${t('cli.warn.launchDirMissing', { dir: values['launch-dir'] as string, root: rootLabel })}\n`);
+        // 폴더가 아니라 "있는 파일" 이면 없다고 하지 않고 파일이라고 알려 준다(경고만, 종료 코드·해석은 그대로).
+        const key = pathExists(opts.launchDir, 'file', rootAbs, example) ? 'cli.warn.launchDirNotDir' : 'cli.warn.launchDirMissing';
+        io.stderr(`${t(key, { dir: values['launch-dir'] as string, root: rootLabel })}\n`);
       }
     }
     const res = resolveFile(index, file, opts, userRules);

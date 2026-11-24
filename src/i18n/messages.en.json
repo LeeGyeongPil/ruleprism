@@ -151,6 +151,7 @@
   "cli.hint.checkPathMissing": "fix the path in the expectation file; paths are relative to the workspace root",
   "cli.warn.fileMissing": "warning: \"{file}\" does not exist in the workspace {root}; showing the result as if it were created",
   "cli.warn.launchDirMissing": "warning: launch folder \"{dir}\" does not exist in the workspace {root}",
+  "cli.warn.launchDirNotDir": "warning: launch folder \"{dir}\" is a file, not a folder",
   "cli.error.expectUnreadable": "cannot read the expectations file \"{file}\" ({error})",
   "cli.hint.expectUnreadable": "check the path and its permissions; it is resolved from the current folder",
   "cli.error.expectFormat": "the expectations file \"{file}\" is not valid: {detail}",

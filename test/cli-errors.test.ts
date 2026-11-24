@@ -179,6 +179,28 @@ describe('CLI error paths', () => {
       expect(r.stderr).not.toMatch(/^error:/m);
     });
 
+    it('which: --launch-dir pointing at a file warns notDir, a missing path warns missing', () => {
+      const f = runCli(['which', 'src/a.ts', '--root', ws, '--launch-dir', 'src/a.ts'], { env: EN });
+      expect(f.code).toBe(0);
+      expect(f.stderr).toContain('warning: launch folder "src/a.ts" is a file, not a folder');
+      expect(f.stderr).not.toContain('does not exist');
+      const m = runCli(['which', 'src/a.ts', '--root', ws, '--launch-dir', 'nope'], { env: EN });
+      expect(m.code).toBe(0);
+      expect(m.stderr).toContain('launch folder "nope" does not exist');
+    });
+
+    it('which --example: --launch-dir pointing at a file warns notDir, a missing path warns missing', () => {
+      const args = ['which', 'src/web/components/Button.tsx', '--example', 'mixed-monorepo', '--agent', 'codex'];
+      const f = runCli([...args, '--launch-dir', 'src/web/components/Button.tsx'], { env: EN });
+      expect(f.code).toBe(0);
+      expect(f.stderr).toContain('is a file, not a folder');
+      const m = runCli([...args, '--launch-dir', 'nope'], { env: EN });
+      expect(m.code).toBe(0);
+      expect(m.stderr).toContain('does not exist');
+      const ko = runCli([...args, '--launch-dir', 'src/web/components/Button.tsx', '--lang', 'ko']);
+      expect(ko.stderr).toContain('폴더가 아니라 파일입니다');
+    });
+
     it('which --json: warnings stay on stderr and stdout is valid JSON (d)', () => {
       const r = runCli(['which', 'nope.ts', '--root', ws, '--launch-dir', 'nope', '--json'], { env: EN });
       expect(r.code).toBe(0);
