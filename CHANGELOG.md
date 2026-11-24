@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.6
+
+### Fixed
+
+- `ruleprism check` now exits 2 when a case's `file` or `launchDir` points outside the workspace root (for example `../..`), even if that path exists on disk. Previously it passed with exit 0, unlike `ruleprism which --launch-dir ../..`. Expectation files that relied on this will now fail; use paths inside the root.
+
 ## 0.1.5
 
 ### Fixed
@@ -21,7 +27,7 @@
 
 ### Known issues
 
-- The comment on the internal `pathExists` helper says paths outside the workspace root are not checked, but the helper does not reject them (existing behavior, unchanged). Such a path is reported as missing only if it does not exist on disk.
+- (Resolved in 0.1.6: `check` now rejects paths outside the workspace root.)
 
 ## 0.1.2
 
